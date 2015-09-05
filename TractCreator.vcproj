@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="9,00"
+	Name="TractCreator"
+	ProjectGUID="{80AD240B-44DE-3FDA-B173-5461452A906C}"
+	Keyword="Qt4VSv1.0">
+	<Platforms>
+		<Platform
+			Name="Win32" />
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory="."
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			ConfigurationType="1"
+			IntermediateDirectory="debug\"
+			UseOfMfc="0">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtCore&quot;,&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtGui&quot;,&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include&quot;,&quot;c:\Program Files\MATLAB\R2009a\extern\include&quot;,&quot;c:\Program Files\MATLAB\R2009a\extern\lib\win32\microsoft&quot;,&quot;..\armadillo202\include&quot;,&quot;c:\VTK\include\vtk-5.6&quot;,&quot;c:\VTK\lib\vtk-5.6&quot;,&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\ActiveQt&quot;,&quot;debug&quot;,&quot;.&quot;,c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\mkspecs\default"
+				AdditionalOptions="-Zm200 -w34100 -w34189"
+				AssemblerListingLocation="debug\"
+				BufferSecurityCheck="false"
+				DebugInformationFormat="3"
+				ExceptionHandling="1"
+				GeneratePreprocessedFile="0"
+				ObjectFile="debug\"
+				Optimization ="4"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,QT_DLL,QT_GUI_LIB,QT_CORE_LIB,QT_HAVE_MMX,QT_HAVE_3DNOW,QT_HAVE_SSE,QT_HAVE_MMXEXT,QT_HAVE_SSE2,QT_THREAD_SUPPORT"
+				ProgramDataBaseFileName=".\"
+				RuntimeLibrary="3"
+				RuntimeTypeInfo="true"
+				SuppressStartupBanner="true"
+				TreatWChar_tAsBuiltInType="false"
+				WarningLevel="3" />
+			<Tool
+				Name="VCCustomBuildTool" />
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\lib\qtmaind.lib &quot;C:/Program Files/MATLAB/R2009a/extern/lib/win32/microsoft/libmx.lib&quot; &quot;C:/Program Files/MATLAB/R2009a/extern/lib/win32/microsoft/libmat.lib&quot; C:/VTK/lib/vtk-5.6\vtkCommon.lib C:/VTK/lib/vtk-5.6\vtksys.lib C:/VTK/lib/vtk-5.6\QVTK.lib C:/VTK/lib/vtk-5.6\vtkQtChart.lib C:/VTK/lib/vtk-5.6\vtkViews.lib C:/VTK/lib/vtk-5.6\vtkWidgets.lib C:/VTK/lib/vtk-5.6\vtkInfovis.lib C:/VTK/lib/vtk-5.6\vtkRendering.lib C:/VTK/lib/vtk-5.6\vtkGraphics.lib C:/VTK/lib/vtk-5.6\vtkImaging.lib C:/VTK/lib/vtk-5.6\vtkIO.lib C:/VTK/lib/vtk-5.6\vtkFiltering.lib C:/VTK/lib/vtk-5.6\vtklibxml2.lib C:/VTK/lib/vtk-5.6\vtkDICOMParser.lib C:/VTK/lib/vtk-5.6\vtkpng.lib C:/VTK/lib/vtk-5.6\vtkpng.lib C:/VTK/lib/vtk-5.6\vtktiff.lib C:/VTK/lib/vtk-5.6\vtkzlib.lib C:/VTK/lib/vtk-5.6\vtkjpeg.lib C:/VTK/lib/vtk-5.6\vtkalglib.lib C:/VTK/lib/vtk-5.6\vtkexpat.lib C:/VTK/lib/vtk-5.6\vtkverdict.lib C:/VTK/lib/vtk-5.6\vtkmetaio.lib C:/VTK/lib/vtk-5.6\vtkNetCDF.lib C:/VTK/lib/vtk-5.6\vtksqlite.lib C:/VTK/lib/vtk-5.6\vtkexoIIc.lib C:/VTK/lib/vtk-5.6\vtkftgl.lib C:/VTK/lib/vtk-5.6\vtkfreetype.lib C:/VTK/lib/vtk-5.6\vtkHybrid.lib c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\lib\QtGuid4.lib c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\lib\QtCored4.lib"
+				AdditionalLibraryDirectories="c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\lib,C:/VTK/lib/vtk-5.6,C:\OpenSSL-Win32_full\lib"
+				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
+				GenerateDebugInformation="true"
+				IgnoreImportLibrary="true"
+				LinkTimeCodeGeneration="0"
+				OutputFile="debug\TractCreator.exe"
+				ProgramDatabaseFile=""
+				SubSystem="2"
+				SuppressStartupBanner="true" />
+			<Tool
+				Name="VCMIDLTool"
+				DefaultCharType="0"
+				EnableErrorChecks="1"
+				WarningLevel="0" />
+			<Tool
+				Name="VCPostBuildEventTool" />
+			<Tool
+				Name="VCPreBuildEventTool" />
+			<Tool
+				Name="VCPreLinkEventTool" />
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,QT_DLL,QT_GUI_LIB,QT_CORE_LIB,QT_HAVE_MMX,QT_HAVE_3DNOW,QT_HAVE_SSE,QT_HAVE_MMXEXT,QT_HAVE_SSE2,QT_THREAD_SUPPORT,_DEBUG" />
+		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="."
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			ConfigurationType="1"
+			IntermediateDirectory="release\"
+			UseOfMfc="0">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtCore&quot;,&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtGui&quot;,&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include&quot;,&quot;c:\Program Files\MATLAB\R2009a\extern\include&quot;,&quot;c:\Program Files\MATLAB\R2009a\extern\lib\win32\microsoft&quot;,&quot;..\armadillo202\include&quot;,&quot;c:\VTK\include\vtk-5.6&quot;,&quot;c:\VTK\lib\vtk-5.6&quot;,&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\ActiveQt&quot;,&quot;release&quot;,&quot;.&quot;,c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\mkspecs\default"
+				AdditionalOptions="-Zm200 -w34100 -w34189"
+				AssemblerListingLocation="release\"
+				BufferSecurityCheck="false"
+				DebugInformationFormat="0"
+				ExceptionHandling="1"
+				GeneratePreprocessedFile="0"
+				ObjectFile="release\"
+				Optimization ="2"
+				PreprocessorDefinitions="QT_NO_DEBUG,NDEBUG,_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,QT_DLL,QT_NO_DEBUG,QT_GUI_LIB,QT_CORE_LIB,QT_HAVE_MMX,QT_HAVE_3DNOW,QT_HAVE_SSE,QT_HAVE_MMXEXT,QT_HAVE_SSE2,QT_THREAD_SUPPORT,NDEBUG"
+				ProgramDataBaseFileName=".\"
+				RuntimeLibrary="2"
+				RuntimeTypeInfo="true"
+				SuppressStartupBanner="true"
+				TreatWChar_tAsBuiltInType="false"
+				WarningLevel="3" />
+			<Tool
+				Name="VCCustomBuildTool" />
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\lib\qtmain.lib &quot;C:/Program Files/MATLAB/R2009a/extern/lib/win32/microsoft/libmx.lib&quot; &quot;C:/Program Files/MATLAB/R2009a/extern/lib/win32/microsoft/libmat.lib&quot; C:/VTK/lib/vtk-5.6\vtkCommon.lib C:/VTK/lib/vtk-5.6\vtksys.lib C:/VTK/lib/vtk-5.6\QVTK.lib C:/VTK/lib/vtk-5.6\vtkQtChart.lib C:/VTK/lib/vtk-5.6\vtkViews.lib C:/VTK/lib/vtk-5.6\vtkWidgets.lib C:/VTK/lib/vtk-5.6\vtkInfovis.lib C:/VTK/lib/vtk-5.6\vtkRendering.lib C:/VTK/lib/vtk-5.6\vtkGraphics.lib C:/VTK/lib/vtk-5.6\vtkImaging.lib C:/VTK/lib/vtk-5.6\vtkIO.lib C:/VTK/lib/vtk-5.6\vtkFiltering.lib C:/VTK/lib/vtk-5.6\vtklibxml2.lib C:/VTK/lib/vtk-5.6\vtkDICOMParser.lib C:/VTK/lib/vtk-5.6\vtkpng.lib C:/VTK/lib/vtk-5.6\vtkpng.lib C:/VTK/lib/vtk-5.6\vtktiff.lib C:/VTK/lib/vtk-5.6\vtkzlib.lib C:/VTK/lib/vtk-5.6\vtkjpeg.lib C:/VTK/lib/vtk-5.6\vtkalglib.lib C:/VTK/lib/vtk-5.6\vtkexpat.lib C:/VTK/lib/vtk-5.6\vtkverdict.lib C:/VTK/lib/vtk-5.6\vtkmetaio.lib C:/VTK/lib/vtk-5.6\vtkNetCDF.lib C:/VTK/lib/vtk-5.6\vtksqlite.lib C:/VTK/lib/vtk-5.6\vtkexoIIc.lib C:/VTK/lib/vtk-5.6\vtkftgl.lib C:/VTK/lib/vtk-5.6\vtkfreetype.lib C:/VTK/lib/vtk-5.6\vtkHybrid.lib c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\lib\QtGui4.lib c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\lib\QtCore4.lib"
+				AdditionalLibraryDirectories="c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\lib,C:/VTK/lib/vtk-5.6,C:\OpenSSL-Win32_full\lib"
+				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
+				GenerateDebugInformation="false"
+				IgnoreImportLibrary="true"
+				LinkIncremental="1"
+				LinkTimeCodeGeneration="0"
+				OutputFile="release\TractCreator.exe"
+				ProgramDatabaseFile=""
+				SubSystem="2"
+				SuppressStartupBanner="true" />
+			<Tool
+				Name="VCMIDLTool"
+				DefaultCharType="0"
+				EnableErrorChecks="1"
+				WarningLevel="0" />
+			<Tool
+				Name="VCPostBuildEventTool" />
+			<Tool
+				Name="VCPreBuildEventTool" />
+			<Tool
+				Name="VCPreLinkEventTool" />
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="QT_NO_DEBUG,NDEBUG,_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,QT_DLL,QT_NO_DEBUG,QT_GUI_LIB,QT_CORE_LIB,QT_HAVE_MMX,QT_HAVE_3DNOW,QT_HAVE_SSE,QT_HAVE_MMXEXT,QT_HAVE_SSE2,QT_THREAD_SUPPORT" />
+		</Configuration>
+	</Configurations>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
+			<File
+				RelativePath="CustomLabel.cpp" />
+			<File
+				RelativePath="lengthdialog.cpp" />
+			<File
+				RelativePath="main.cpp" />
+			<File
+				RelativePath="mainwindow.cpp" />
+			<File
+				RelativePath="mtrand.cpp" />
+			<File
+				RelativePath="sizedialog.cpp" />
+			<File
+				RelativePath="statsdialog.cpp" />
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			<File
+				RelativePath="CustomLabel.h">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\moc.exe;CustomLabel.h"
+						CommandLine="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtCore&quot; -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtGui&quot; -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include&quot; -I&quot;c:\Program Files\MATLAB\R2009a\extern\include&quot; -I&quot;c:\Program Files\MATLAB\R2009a\extern\lib\win32\microsoft&quot; -I&quot;..\armadillo202\include&quot; -I&quot;c:\VTK\include\vtk-5.6&quot; -I&quot;c:\VTK\lib\vtk-5.6&quot; -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\ActiveQt&quot; -I&quot;debug&quot; -I&quot;.&quot; -Ic:\QtSDK\Desktop\Qt\4.7.3\msvc2008\mkspecs\default -D_MSC_VER=1500 -DWIN32 CustomLabel.h -o debug\moc_CustomLabel.cpp"
+						Description="MOC CustomLabel.h"
+						Outputs="debug\moc_CustomLabel.cpp"
+						Path="c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin" />
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\moc.exe;CustomLabel.h"
+						CommandLine="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtCore&quot; -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtGui&quot; -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include&quot; -I&quot;c:\Program Files\MATLAB\R2009a\extern\include&quot; -I&quot;c:\Program Files\MATLAB\R2009a\extern\lib\win32\microsoft&quot; -I&quot;..\armadillo202\include&quot; -I&quot;c:\VTK\include\vtk-5.6&quot; -I&quot;c:\VTK\lib\vtk-5.6&quot; -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\ActiveQt&quot; -I&quot;release&quot; -I&quot;.&quot; -Ic:\QtSDK\Desktop\Qt\4.7.3\msvc2008\mkspecs\default -D_MSC_VER=1500 -DWIN32 CustomLabel.h -o release\moc_CustomLabel.cpp"
+						Description="MOC CustomLabel.h"
+						Outputs="release\moc_CustomLabel.cpp"
+						Path="c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin" />
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="lengthdialog.h">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\moc.exe;lengthdialog.h"
+						CommandLine="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtCore&quot; -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtGui&quot; -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include&quot; -I&quot;c:\Program Files\MATLAB\R2009a\extern\include&quot; -I&quot;c:\Program Files\MATLAB\R2009a\extern\lib\win32\microsoft&quot; -I&quot;..\armadillo202\include&quot; -I&quot;c:\VTK\include\vtk-5.6&quot; -I&quot;c:\VTK\lib\vtk-5.6&quot; -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\ActiveQt&quot; -I&quot;debug&quot; -I&quot;.&quot; -Ic:\QtSDK\Desktop\Qt\4.7.3\msvc2008\mkspecs\default -D_MSC_VER=1500 -DWIN32 lengthdialog.h -o debug\moc_lengthdialog.cpp"
+						Description="MOC lengthdialog.h"
+						Outputs="debug\moc_lengthdialog.cpp"
+						Path="c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin" />
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\moc.exe;lengthdialog.h"
+						CommandLine="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtCore&quot; -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtGui&quot; -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include&quot; -I&quot;c:\Program Files\MATLAB\R2009a\extern\include&quot; -I&quot;c:\Program Files\MATLAB\R2009a\extern\lib\win32\microsoft&quot; -I&quot;..\armadillo202\include&quot; -I&quot;c:\VTK\include\vtk-5.6&quot; -I&quot;c:\VTK\lib\vtk-5.6&quot; -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\ActiveQt&quot; -I&quot;release&quot; -I&quot;.&quot; -Ic:\QtSDK\Desktop\Qt\4.7.3\msvc2008\mkspecs\default -D_MSC_VER=1500 -DWIN32 lengthdialog.h -o release\moc_lengthdialog.cpp"
+						Description="MOC lengthdialog.h"
+						Outputs="release\moc_lengthdialog.cpp"
+						Path="c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin" />
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="mainwindow.h">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\moc.exe;mainwindow.h"
+						CommandLine="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtCore&quot; -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtGui&quot; -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include&quot; -I&quot;c:\Program Files\MATLAB\R2009a\extern\include&quot; -I&quot;c:\Program Files\MATLAB\R2009a\extern\lib\win32\microsoft&quot; -I&quot;..\armadillo202\include&quot; -I&quot;c:\VTK\include\vtk-5.6&quot; -I&quot;c:\VTK\lib\vtk-5.6&quot; -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\ActiveQt&quot; -I&quot;debug&quot; -I&quot;.&quot; -Ic:\QtSDK\Desktop\Qt\4.7.3\msvc2008\mkspecs\default -D_MSC_VER=1500 -DWIN32 mainwindow.h -o debug\moc_mainwindow.cpp"
+						Description="MOC mainwindow.h"
+						Outputs="debug\moc_mainwindow.cpp"
+						Path="c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin" />
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\moc.exe;mainwindow.h"
+						CommandLine="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtCore&quot; -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtGui&quot; -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include&quot; -I&quot;c:\Program Files\MATLAB\R2009a\extern\include&quot; -I&quot;c:\Program Files\MATLAB\R2009a\extern\lib\win32\microsoft&quot; -I&quot;..\armadillo202\include&quot; -I&quot;c:\VTK\include\vtk-5.6&quot; -I&quot;c:\VTK\lib\vtk-5.6&quot; -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\ActiveQt&quot; -I&quot;release&quot; -I&quot;.&quot; -Ic:\QtSDK\Desktop\Qt\4.7.3\msvc2008\mkspecs\default -D_MSC_VER=1500 -DWIN32 mainwindow.h -o release\moc_mainwindow.cpp"
+						Description="MOC mainwindow.h"
+						Outputs="release\moc_mainwindow.cpp"
+						Path="c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin" />
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="mtrand.h" />
+			<File
+				RelativePath="sizedialog.h">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\moc.exe;sizedialog.h"
+						CommandLine="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtCore&quot; -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtGui&quot; -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include&quot; -I&quot;c:\Program Files\MATLAB\R2009a\extern\include&quot; -I&quot;c:\Program Files\MATLAB\R2009a\extern\lib\win32\microsoft&quot; -I&quot;..\armadillo202\include&quot; -I&quot;c:\VTK\include\vtk-5.6&quot; -I&quot;c:\VTK\lib\vtk-5.6&quot; -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\ActiveQt&quot; -I&quot;debug&quot; -I&quot;.&quot; -Ic:\QtSDK\Desktop\Qt\4.7.3\msvc2008\mkspecs\default -D_MSC_VER=1500 -DWIN32 sizedialog.h -o debug\moc_sizedialog.cpp"
+						Description="MOC sizedialog.h"
+						Outputs="debug\moc_sizedialog.cpp"
+						Path="c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin" />
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\moc.exe;sizedialog.h"
+						CommandLine="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtCore&quot; -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtGui&quot; -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include&quot; -I&quot;c:\Program Files\MATLAB\R2009a\extern\include&quot; -I&quot;c:\Program Files\MATLAB\R2009a\extern\lib\win32\microsoft&quot; -I&quot;..\armadillo202\include&quot; -I&quot;c:\VTK\include\vtk-5.6&quot; -I&quot;c:\VTK\lib\vtk-5.6&quot; -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\ActiveQt&quot; -I&quot;release&quot; -I&quot;.&quot; -Ic:\QtSDK\Desktop\Qt\4.7.3\msvc2008\mkspecs\default -D_MSC_VER=1500 -DWIN32 sizedialog.h -o release\moc_sizedialog.cpp"
+						Description="MOC sizedialog.h"
+						Outputs="release\moc_sizedialog.cpp"
+						Path="c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin" />
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="statsdialog.h">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\moc.exe;statsdialog.h"
+						CommandLine="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtCore&quot; -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtGui&quot; -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include&quot; -I&quot;c:\Program Files\MATLAB\R2009a\extern\include&quot; -I&quot;c:\Program Files\MATLAB\R2009a\extern\lib\win32\microsoft&quot; -I&quot;..\armadillo202\include&quot; -I&quot;c:\VTK\include\vtk-5.6&quot; -I&quot;c:\VTK\lib\vtk-5.6&quot; -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\ActiveQt&quot; -I&quot;debug&quot; -I&quot;.&quot; -Ic:\QtSDK\Desktop\Qt\4.7.3\msvc2008\mkspecs\default -D_MSC_VER=1500 -DWIN32 statsdialog.h -o debug\moc_statsdialog.cpp"
+						Description="MOC statsdialog.h"
+						Outputs="debug\moc_statsdialog.cpp"
+						Path="c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin" />
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\moc.exe;statsdialog.h"
+						CommandLine="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtCore&quot; -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtGui&quot; -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include&quot; -I&quot;c:\Program Files\MATLAB\R2009a\extern\include&quot; -I&quot;c:\Program Files\MATLAB\R2009a\extern\lib\win32\microsoft&quot; -I&quot;..\armadillo202\include&quot; -I&quot;c:\VTK\include\vtk-5.6&quot; -I&quot;c:\VTK\lib\vtk-5.6&quot; -I&quot;c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\ActiveQt&quot; -I&quot;release&quot; -I&quot;.&quot; -Ic:\QtSDK\Desktop\Qt\4.7.3\msvc2008\mkspecs\default -D_MSC_VER=1500 -DWIN32 statsdialog.h -o release\moc_statsdialog.cpp"
+						Description="MOC statsdialog.h"
+						Outputs="release\moc_statsdialog.cpp"
+						Path="c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin" />
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<Filter
+			Name="Generated Files"
+			Filter="cpp;c;cxx;moc;h;def;odl;idl;res;"
+			UniqueIdentifier="{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}">
+			<File
+				RelativePath="debug\moc_CustomLabel.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true" />
+			</File>
+			<File
+				RelativePath="release\moc_CustomLabel.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true" />
+			</File>
+			<File
+				RelativePath="debug\moc_lengthdialog.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true" />
+			</File>
+			<File
+				RelativePath="release\moc_lengthdialog.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true" />
+			</File>
+			<File
+				RelativePath="debug\moc_mainwindow.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true" />
+			</File>
+			<File
+				RelativePath="release\moc_mainwindow.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true" />
+			</File>
+			<File
+				RelativePath="debug\moc_sizedialog.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true" />
+			</File>
+			<File
+				RelativePath="release\moc_sizedialog.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true" />
+			</File>
+			<File
+				RelativePath="debug\moc_statsdialog.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true" />
+			</File>
+			<File
+				RelativePath="release\moc_statsdialog.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true" />
+			</File>
+			<File
+				RelativePath="debug\qrc_TractCreator.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true" />
+			</File>
+			<File
+				RelativePath="release\qrc_TractCreator.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true" />
+			</File>
+			<File
+				RelativePath="ui_lengthdialog.h" />
+			<File
+				RelativePath="ui_mainwindow.h" />
+			<File
+				RelativePath="ui_sizedialog.h" />
+			<File
+				RelativePath="ui_statsdialog.h" />
+		</Filter>
+		<Filter
+			Name="Form Files"
+			Filter="ui"
+			UniqueIdentifier="{99349809-55BA-4b9d-BF79-8FDBB0286EB3}"
+			ParseFiles="false">
+			<File
+				RelativePath="lengthdialog.ui">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\uic.exe;lengthdialog.ui"
+						CommandLine="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\uic.exe lengthdialog.ui -o ui_lengthdialog.h"
+						Description="UIC lengthdialog.ui"
+						Outputs="ui_lengthdialog.h"
+						Path="c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin" />
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\uic.exe;lengthdialog.ui"
+						CommandLine="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\uic.exe lengthdialog.ui -o ui_lengthdialog.h"
+						Description="UIC lengthdialog.ui"
+						Outputs="ui_lengthdialog.h"
+						Path="c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin" />
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="mainwindow.ui">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\uic.exe;mainwindow.ui"
+						CommandLine="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\uic.exe mainwindow.ui -o ui_mainwindow.h"
+						Description="UIC mainwindow.ui"
+						Outputs="ui_mainwindow.h"
+						Path="c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin" />
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\uic.exe;mainwindow.ui"
+						CommandLine="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\uic.exe mainwindow.ui -o ui_mainwindow.h"
+						Description="UIC mainwindow.ui"
+						Outputs="ui_mainwindow.h"
+						Path="c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin" />
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="sizedialog.ui">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\uic.exe;sizedialog.ui"
+						CommandLine="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\uic.exe sizedialog.ui -o ui_sizedialog.h"
+						Description="UIC sizedialog.ui"
+						Outputs="ui_sizedialog.h"
+						Path="c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin" />
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\uic.exe;sizedialog.ui"
+						CommandLine="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\uic.exe sizedialog.ui -o ui_sizedialog.h"
+						Description="UIC sizedialog.ui"
+						Outputs="ui_sizedialog.h"
+						Path="c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin" />
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="statsdialog.ui">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\uic.exe;statsdialog.ui"
+						CommandLine="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\uic.exe statsdialog.ui -o ui_statsdialog.h"
+						Description="UIC statsdialog.ui"
+						Outputs="ui_statsdialog.h"
+						Path="c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin" />
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\uic.exe;statsdialog.ui"
+						CommandLine="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\uic.exe statsdialog.ui -o ui_statsdialog.h"
+						Description="UIC statsdialog.ui"
+						Outputs="ui_statsdialog.h"
+						Path="c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin" />
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="qrc;*"
+			UniqueIdentifier="{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}"
+			ParseFiles="false">
+			<File
+				RelativePath="images\Open.png" />
+			<File
+				RelativePath="TractCreator.qrc">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\rcc.exe;TractCreator.qrc;images\Open.png;images\Undo.png;images\and.PNG;images\clear.png;images\close.png;images\colors.png;images\exit.png;images\freehand.png;images\not.PNG;images\oval.gif;images\rect.png;images\save.png"
+						CommandLine="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\rcc.exe -name TractCreator TractCreator.qrc -o debug\qrc_TractCreator.cpp"
+						Description="RCC TractCreator.qrc"
+						Outputs="debug\qrc_TractCreator.cpp"
+						Path="c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin" />
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\rcc.exe;TractCreator.qrc;images\Open.png;images\Undo.png;images\and.PNG;images\clear.png;images\close.png;images\colors.png;images\exit.png;images\freehand.png;images\not.PNG;images\oval.gif;images\rect.png;images\save.png"
+						CommandLine="C:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin\rcc.exe -name TractCreator TractCreator.qrc -o release\qrc_TractCreator.cpp"
+						Description="RCC TractCreator.qrc"
+						Outputs="release\qrc_TractCreator.cpp"
+						Path="c:\QtSDK\Desktop\Qt\4.7.3\msvc2008\bin" />
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="images\Undo.png" />
+			<File
+				RelativePath="images\and.PNG" />
+			<File
+				RelativePath="images\clear.png" />
+			<File
+				RelativePath="images\close.png" />
+			<File
+				RelativePath="images\colors.png" />
+			<File
+				RelativePath="images\exit.png" />
+			<File
+				RelativePath="images\freehand.png" />
+			<File
+				RelativePath="images\not.PNG" />
+			<File
+				RelativePath="images\oval.gif" />
+			<File
+				RelativePath="images\rect.png" />
+			<File
+				RelativePath="images\save.png" />
+		</Filter>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>
