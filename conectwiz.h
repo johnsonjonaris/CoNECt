@@ -8,20 +8,41 @@
 #include "ui_page2dw.h"
 #include "ui_page1bna.h"
 #include "gtabledialog.h"
-#include "DataTypes.h"
+#include "datatypes.h"
 #include "mriimage.h"
 #include "armadillo"
 
 using namespace arma;
 
-enum Algorithm{FACT = 0, TOD_TRACT = 2};
-enum { PAGE_INTRO,PAGE_1_DW, PAGE_2_DW, PAGE_1_BNA, PAGE_2_BNA };
-class CoNECtWiz : public QWizard
+enum Algorithm          ///< tracking algorithm to use
+{
+    FACT = 0,           ///< FACT tracking algorithm by Mori S and co.
+    TOD_TRACT = 2       ///< TDF-based probabilistic tracking
+};
+
+enum
+{
+    PAGE_INTRO,         ///< Wizard intro page
+    PAGE_1_DW,          ///< diffusion weighted page 1
+    PAGE_2_DW,          ///< diffusion weighted page 2
+    PAGE_1_BNA,         ///< brain network analysis page 1
+    PAGE_2_BNA          ///< brain network analysis page 2
+};
+
+/**
+  * \class CoNECtWizard
+  *
+  * This class executes intro page of the CoNECt wizard. The wizard allows the user
+  * to generate:
+  *     - Diffusion weighted analysis including fiber tracking
+  *     - Connectome generation using tracking data + label file
+  */
+class CoNECtWizard : public QWizard
 {
     Q_OBJECT
 
 public:
-    CoNECtWiz(QWidget *parent = 0);
+    CoNECtWizard(QWidget *parent = 0);
     void getTractographyParameters(TrackingParameters *tp);
 };
 
@@ -39,6 +60,11 @@ private slots:
 };
 /**************************************************************************************************/
 
+/**
+  * \class Page1DW
+  *
+  * This class shows first diffusion weighted page of the CoNECt wizard.
+  */
 class Page1DW : public QWizardPage, public Ui::Page1DW
 {
     Q_OBJECT
@@ -66,6 +92,12 @@ private slots:
 };
 /**************************************************************************************************/
 
+/**
+  * \class Page2DW
+  *
+  * This class shows second diffusion weighted page of the CoNECt wizard.
+  */
+
 class Page2DW : public QWizardPage, public Ui::Page2DW
 {
     Q_OBJECT
@@ -83,6 +115,12 @@ private slots:
     void onECCBoxCheck(bool status) { if (!status) NoiseLevelEdit->setText("0"); }
 };
 /**************************************************************************************************/
+
+/**
+  * \class Page1BNA
+  *
+  * This class shows first brain network analysis page of the CoNECt wizard.
+  */
 
 class Page1BNA : public QWizardPage, public Ui::Page1BNA
 {

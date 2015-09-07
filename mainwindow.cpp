@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 
+
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
     setupUi(this);
@@ -1016,7 +1017,7 @@ void MainWindow::openModel()
 // wizard stuff
 void MainWindow::onWizardButtonPress()
 {
-    CoNECtWiz *wizard = new CoNECtWiz(this);
+    CoNECtWizard *wizard = new CoNECtWizard(this);
     if (!wizard->exec()) {
         delete wizard;
         return;
@@ -1200,7 +1201,7 @@ void MainWindow::onWizardButtonPress()
 
         Connectome *cmm = new Connectome();
         FiberTracts *fb = new FiberTracts;
-        DiffModelDimensionParam dmp;
+        DiffusionModelDimension dmp;
         AnalyzeHeader header;
         s16_cube label;
         QString fiberFile, labelFile, saveFolder, nwSaveFile, metricSaveFile, topProgText;
@@ -1283,9 +1284,16 @@ void MainWindow::onWizardButtonPress()
     return;
 }
 
-bool MainWindow::processDTI_DWI_Subject(const QString &dwiFile, ImageFileType inType, const mat &gTable,
-                                        float bValue, int nLevel, bool getMetrics, TrackingParameters *tp,
-                                        ImageFileType outType, const QString &outFolder, QString &log,
+bool MainWindow::processDTI_DWI_Subject(const QString &dwiFile,
+                                        ImageFileType inType,
+                                        const mat &gTable,
+                                        float bValue,
+                                        int nLevel,
+                                        bool getMetrics,
+                                        TrackingParameters *tp,
+                                        ImageFileType outType,
+                                        const QString &outFolder,
+                                        QString &log,
                                         MyProgressDialog *prog)
 {
     // open DWI file
@@ -1378,8 +1386,10 @@ bool MainWindow::processDTI_DWI_Subject(const QString &dwiFile, ImageFileType in
     return true;
 }
 
-bool MainWindow::DICOM2NII(const QString &inFolder,const QString &outFolder,
-                           bool toNii, QString &out)
+bool MainWindow::DICOM2NII(const QString &inFolder,
+                           const QString &outFolder,
+                           bool toNii,
+                           QString &out)
 {
     // dicom2nii place
     QChar sep = QDir::separator();
@@ -1944,7 +1954,7 @@ void MainWindow::openFiber()
         return;
     QFileInfo fi(fileName);
     if ( fi.suffix() == "dat" || fi.suffix() == "fib") {
-        DiffModelDimensionParam dmp = {
+        DiffusionModelDimension dmp = {
             dm.nRows,dm.nCols,dm.nSlices,
             dm.dx,dm.dy,dm.dz
         };
@@ -3277,7 +3287,7 @@ void MainWindow::renderButPressed()
     LabelsList->setColumnWidth(3,200);
     // apply a specific editor to the third column:
     // a QpinBox with limits of 0 to 100
-    LabelsList->setItemDelegateForColumn(2,new SpinBoxDelegate(LabelOpacitySpinner,LabelsList));
+    LabelsList->setItemDelegateForColumn(2,new SpinBoxDelegate(LabelOpacitySpinner, LabelsList));
     // allow only clearing models
     RenderButton->setEnabled(false);
     ClearLabelsButton->setEnabled(true);

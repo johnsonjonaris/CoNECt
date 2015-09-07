@@ -1,7 +1,7 @@
 #include "conectwiz.h"
 
 
-CoNECtWiz::CoNECtWiz(QWidget *parent) : QWizard(parent)
+CoNECtWizard::CoNECtWizard(QWidget *parent) : QWizard(parent)
 {
     setDefaultProperty("QGroupBox","checked","toggled");
     setDefaultProperty("QDoubleSpinBox","value","valueChanged");
@@ -19,7 +19,7 @@ CoNECtWiz::CoNECtWiz(QWidget *parent) : QWizard(parent)
     setWindowTitle("Data Analysis Wizard");
 }
 
-void CoNECtWiz::getTractographyParameters(TrackingParameters *tp)
+void CoNECtWizard::getTractographyParameters(TrackingParameters *tp)
 {
     const double PI          = 3.1415926535;
     tp->tractsPerSeed        = this->field("page2dw.tractPerVoxel").toUInt();

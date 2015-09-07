@@ -4,7 +4,7 @@
 #include <QtGui>
 #include "myprogressdialog.h"
 #include "armadillo"
-#include "DataTypes.h"
+#include "datatypes.h"
 
 using namespace arma;   // don't forget it VIP
 
@@ -67,7 +67,7 @@ public:
     { dx = ffh.fPixelSizeWidth; dy = ffh.fPixelSizeHeight; dz = ffh.fSliceThickness; }
 
     // file access functions
-    bool readFiber(const QString &fileName,const DiffModelDimensionParam &dmp,
+    bool readFiber(const QString &fileName,const DiffusionModelDimension &dmp,
                    MyProgressDialog *progress, bool append);
     bool writeFiber(const QString &fileName,const QList<quint32> &saveIdx,
                     MyProgressDialog *progress);

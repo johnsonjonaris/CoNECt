@@ -7,7 +7,7 @@
 #include <QEvent>
 #include <QWheelEvent>
 #include "myprogressdialog.h"
-#include "DataTypes.h"
+#include "datatypes.h"
 #include "mriimage.h"
 #include "ui_datainspectiondialog.h"
 #include "armadillo"

@@ -2,7 +2,7 @@
 #define MRIVTKWIDGET_H
 
 #include <QtGui>
-#include "DataTypes.h"
+#include "datatypes.h"
 #include "armadillo"
 #include "myprogressdialog.h"
 

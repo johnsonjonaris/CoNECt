@@ -20,7 +20,7 @@ FiberTracts::FiberTracts()
     ffh.enumSliceSequencing = 0;
 }
 
-bool FiberTracts::readFiber(const QString &fileName,const DiffModelDimensionParam &dmp,
+bool FiberTracts::readFiber(const QString &fileName,const DiffusionModelDimension &dmp,
                             MyProgressDialog *progress, bool append)
 {
     // try opening the file

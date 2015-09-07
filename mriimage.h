@@ -6,7 +6,7 @@
 #include "myprogressdialog.h"
 #include <QFileInfo>
 #include "armadillo"
-#include "DataTypes.h"
+#include "datatypes.h"
 using namespace arma;
 using namespace std;
 
@@ -306,6 +306,6 @@ bool writeImage(QString imgfileName,uint fileType,
 AnalyzeHeader prepareHeader(quint32 dim[4],ImageDataType dataType,
                             float pixDim[3],ImageFileType fileType);
 
-DiffModelDimensionParam getParameters(const AnalyzeHeader &header);
+DiffusionModelDimension getParameters(const AnalyzeHeader &header);
 
 #endif // MRIIMAGE_H

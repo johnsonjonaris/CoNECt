@@ -41,16 +41,16 @@ void CView::resetSize()
 void CView::showContextMenu(const QPoint &pos)
 {
     QMenu *myMenu = new QMenu;
-    QAction *saveAs, *Copy;
+    QAction *saveAs, *copy;
     saveAs = myMenu->addAction("Save Image As");
-    Copy = myMenu->addAction("Copy Image");
+    copy = myMenu->addAction("Copy Image");
 
     QAction* selectedItem = myMenu->exec(this->mapToGlobal(pos));
 
     if (selectedItem != NULL) {
         QPixmap img = QPixmap::grabWidget(this->viewport(),
                                           this->mapFromScene(this->sceneRect().toRect()).boundingRect());
-        if (selectedItem == Copy)
+        if (selectedItem == copy)
             QApplication::clipboard()->setPixmap(img, QClipboard::Clipboard);
         else {
              // writes pixmap in PNG format

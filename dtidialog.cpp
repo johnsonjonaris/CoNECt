@@ -5,9 +5,12 @@ DTIDialog::DTIDialog(QWidget *parent) : QDialog(parent)
     setupUi(this);
     tensorOrder<<0<<1<<2<<3<<4<<5;
     // connect signals
-    connect(TensorList,SIGNAL(itemSelectionChanged()),this,SLOT(onTensorItemSlection()));
-    connect(PushUpButton,SIGNAL(clicked()),this,SLOT(onPushUpButtonPress()));
-    connect(PushDownButton,SIGNAL(clicked()),this,SLOT(onPushDownButtonPress()));
+    connect(TensorList, SIGNAL(itemSelectionChanged()),
+            this, SLOT(onTensorItemSlection()));
+    connect(PushUpButton, SIGNAL(clicked()),
+            this, SLOT(onPushUpButtonPress()));
+    connect(PushDownButton, SIGNAL(clicked()),
+            this, SLOT(onPushDownButtonPress()));
 }
 
 void DTIDialog::onTensorItemSlection()

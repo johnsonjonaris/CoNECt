@@ -5,7 +5,7 @@
 #include <QtGui>
 #include "ui_saveVol.h"
 #include "armadillo"
-#include "DataTypes.h"
+#include "datatypes.h"
 using namespace arma;
 
 class SaveImageDialog : public QDialog, public Ui::SaveImageDialog

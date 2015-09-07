@@ -5,12 +5,18 @@ gTableDialog::gTableDialog(QList<mat> *list, QWidget *parent) : QDialog(parent)
 {
     setupUi(this);
     // connect signals
-    connect(gTableListBox,SIGNAL(currentIndexChanged(int)),this,SLOT(ongTableListBoxChange(int)));
-    connect(ImportTableButton,SIGNAL(clicked()),this,SLOT(onImportTabelButtonPress()));
-    connect(AddTableButton,SIGNAL(clicked()),this,SLOT(onAddTableButtonPress()));
-    connect(SaveButton,SIGNAL(clicked()),this,SLOT(onSaveButtonPress()));
-    connect(DeleteTableButton,SIGNAL(clicked()),this,SLOT(onDeleteTableButtonPress()));
-    connect(gTableEdit,SIGNAL(textChanged()),this,SLOT(onTableEditChange()));
+    connect(gTableListBox,SIGNAL(currentIndexChanged(int)),
+            this,SLOT(ongTableListBoxChange(int)));
+    connect(ImportTableButton,SIGNAL(clicked()),
+            this,SLOT(onImportTabelButtonPress()));
+    connect(AddTableButton,SIGNAL(clicked()),
+            this,SLOT(onAddTableButtonPress()));
+    connect(SaveButton,SIGNAL(clicked()),
+            this,SLOT(onSaveButtonPress()));
+    connect(DeleteTableButton,SIGNAL(clicked()),
+            this,SLOT(onDeleteTableButtonPress()));
+    connect(gTableEdit,SIGNAL(textChanged()),
+            this,SLOT(onTableEditChange()));
     gTableList = list;
     SaveButton->setEnabled(false);
 }
@@ -51,9 +57,12 @@ void gTableDialog::ongTableListBoxChange(int index)
 {
     // display table accordingly
     gTableEdit->clear();
-    if ((gTableList == NULL) || gTableList->isEmpty() || (index<0) || (index > gTableList->size()-1))
+    if ((gTableList == NULL) ||
+            gTableList->isEmpty() ||
+            (index<0) ||
+            (index > gTableList->size()-1))
         return;
-    for (int i=0;i<gTableList->at(index).n_rows;i++) {
+    for (int i=0; i<gTableList->at(index).n_rows; i++) {
         QString str = QString::number(i)+ ": " + QString::number(gTableList->at(index).at(i,0)) +
                 ", " + QString::number(gTableList->at(index).at(i,1)) +
                 ", " + QString::number(gTableList->at(index).at(i,2));

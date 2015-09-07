@@ -49,30 +49,37 @@
 #include <QSize>
 #include <QSpinBox>
 
+/**
+  * \class SpinBoxDelegate
+  *
+  * This class allows creating a QSpinBox editor in a tree item.
+  */
 class SpinBoxDelegate : public QItemDelegate
 {
     Q_OBJECT
-    // save the pointer of the QSpinBox in the GUI
-    QSpinBox *s;        // the QSpinBox in the GUI
+    QSpinBox *s;        ///< the QSpinBox in the GUI
 
 public:
 
-    SpinBoxDelegate(QSpinBox *sIn,QObject *parent = 0);
+    SpinBoxDelegate(QSpinBox *s, QObject *parent = 0);
     // note that we should not delete the QSpinBox
     // since it is not created by this class, it is
     // passed by the constructor as an argument
     // to link control only.
-
-
-    QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
+    /// create the editor as a QSpinBox with specific options
+    QWidget *createEditor(QWidget *parent,
+                          const QStyleOptionViewItem &option,
                           const QModelIndex &index) const;
+    /// set the QSpinBox value from editor data
     void setEditorData(QWidget *editor, const QModelIndex &index) const;
-    void setModelData(QWidget *editor, QAbstractItemModel *model,
+    /// save the QSpinBox value as editor data
+    void setModelData(QWidget *editor,
+                      QAbstractItemModel *model,
                       const QModelIndex &index) const;
+    /// restricts the editor to the item
     void updateEditorGeometry(QWidget *editor,
-        const QStyleOptionViewItem &option, const QModelIndex &index) const;
-
-
+                              const QStyleOptionViewItem &option,
+                              const QModelIndex &index) const;
 };
 
 #endif

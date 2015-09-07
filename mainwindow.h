@@ -13,10 +13,10 @@ namespace Ui {
 class MainWindow : public QMainWindow, public Ui::MainWindow
 {
     Q_OBJECT
-    QxtSpanSlider               *FiberLengthSlider;
+    QxtSpanSlider               *FiberLengthSlider;     ///< Qxt 2 side slider
     QLabel                      *LeftSliderLabel, *RightSliderLabel;
     QHBoxLayout                 *SliderHBoxLayout;
-    View                        *VectorsView, *CoronalView, *SagittalView, *AxialView;
+    View                        *VectorsView, *CoronalView, *SagittalView, *AxialView; ///< orthonormal views
     QToolBar                    *MainToolBar;
     QStatusBar                  *StatusBars;
     QLabel                      *LocationLabel, *FileInfo, *ActVolInfo;
@@ -37,18 +37,18 @@ class MainWindow : public QMainWindow, public Ui::MainWindow
     float                       dxImg,dyImg,dzImg, dxByDyImg,dzByDxImg,dzByDyImg;
     double                      minActVol, maxActVol;
 
-    // loaded Images
+    /// loaded Images
     struct {
-        QList<uchar_cube>       ucharImg;   // unsigned character (1 byte)
-        QList<s16_cube>         shortImg;   // signed short int (2 bytes)
-        QList<s32_cube>         intImg;     // signed integer (4 bytes)
-        QList<fcube>            floatImg;   // float (4 bytes)
-        QList<cube>             doubleImg;  // double (8 bytes)
+        QList<uchar_cube>       ucharImg;               ///< unsigned character (1 byte)
+        QList<s16_cube>         shortImg;               ///< signed short int (2 bytes)
+        QList<s32_cube>         intImg;                 ///< signed integer (4 bytes)
+        QList<fcube>            floatImg;               ///< float (4 bytes)
+        QList<cube>             doubleImg;              ///< double (8 bytes)
     }loadedImgs;
-    cube                        activeVol;
+    cube                        activeVol;              ///< active volume being shown
     uint                        nLoadedUchar, nLoadedShort, nLoadedInt,
                                 nLoadedFloat, nLoadedDouble, nLoadedImg;
-    mat                         loadedImgsInfo;
+    mat                         loadedImgsInfo;         ///< loaded images information
     //label images
     bool                        updateOpacitySpinner;
     vec                         labelVisbilityStatus, labelOpacityValues;
@@ -57,28 +57,30 @@ class MainWindow : public QMainWindow, public Ui::MainWindow
     // diffusion model data
     DiffusionModel              dm;
     // vector visualization and colormap
-    uchar_cube                  Rx,Ry,Rz;
-    QImage                      mainColoredImage;
+    uchar_cube                  Rx,Ry,Rz;               ///< vector image
+    QImage                      mainColoredImage;       ///< colored image
 
     // ROI stuff
-    bool                        freehandROI_IsShown, ovalROI_IsShown, rectROI_IsShown;
-    QList<QGraphicsItem *>      ROIs;                   // active drawn items
-    QPolygonF                   freehandPath;           // temporary polygon being drawn
-    QRectF                      rectOvalROI;            // temporary rectangle or oval being drawn
-    QList<QPolygonF>            freeHandROIs;           // list of freehand ROI polygons
-    QList<QRectF>               ovalROIs, rectROIs;     // list of rectangle and oval ROIs
-    QList<ROIShape>             ROIorder;               // the order by which ROIs are drawn
-    QList< QList<quint32> >     selectedFibersList;     // contains a list of the selected fibers indexes
-    QList<quint32>              currentSelectedFibers;  // current fibers to be displayed
-    QList<uchar>                filteringActions;       // contains a list of filtering actions:
-                                                        // ROI Selection, Length or Color Filtering
-    umat                        ROI_Info;               // contains information about ROIs
-                                                        // shape, type, slice, orientation
+    bool                        freehandROI_IsShown,
+                                ovalROI_IsShown,
+                                rectROI_IsShown;        ///< indicate which ROI type is shown
+    QList<QGraphicsItem *>      ROIs;                   ///< active drawn items
+    QPolygonF                   freehandPath;           ///< temporary polygon being drawn
+    QRectF                      rectOvalROI;            ///< temporary rectangle or oval being drawn
+    QList<QPolygonF>            freeHandROIs;           ///< list of freehand ROI polygons
+    QList<QRectF>               ovalROIs, rectROIs;     ///< list of rectangle and oval ROIs
+    QList<ROIShape>             ROIorder;               ///< the order by which ROIs are drawn
+    QList< QList<quint32> >     selectedFibersList;     ///< contains a list of the selected fibers indexes
+    QList<quint32>              currentSelectedFibers;  ///< current fibers to be displayed
+    QList<uchar>                filteringActions;       /**< contains a list of filtering actions:
+                                                          * ROI Selection, Length or Color Filtering */
+    umat                        ROI_Info;               /**< contains information about ROIs
+                                                          * shape, type, slice, orientation */
 
     // fibers
-    QColor                      fiberColor;
-    FiberTracts                 fibers;
-    int                         fiberColorOrientation[3]; // rgb
+    QColor                      fiberColor;             ///< fibers solid color
+    FiberTracts                 fibers;                 ///< fiber tracts
+    int                         fiberColorOrientation[3]; ///< rgb
 
     // connectome
     Connectome                  cm;
@@ -242,12 +244,23 @@ private:
     void enableLabelControls(bool);
     void enableConnectomeControls(bool);
     // wizard stuff
-    bool processDTI_DWI_Subject(const QString &dwiFile, ImageFileType inType, const mat &gTable,
-                                float bValue, int nLevel, bool getMetrics,TrackingParameters *tp,
-                                ImageFileType outType, const QString &outFolder, QString &log,
-                                MyProgressDialog *prog);
-    bool DICOM2NII(const QString &inFolder,const QString &outFolder,
-                   bool toNii, QString &out);
+    bool processDTI_DWI_Subject(const QString &dwiFile,
+                                ImageFileType inType,
+                                const mat &gTable,
+                                float bValue,
+                                int nLevel,
+                                bool getMetrics,
+                                TrackingParameters *tp,
+                                ImageFileType outType,
+                                const QString &outFolder,
+                                QString &log,
+                                MyProgressDialog *prog
+                                );
+    bool DICOM2NII(const QString &inFolder,
+                   const QString &outFolder,
+                   bool toNii,
+                   QString &out
+                   );
     //
     void storeDTIMetrics();
     // LUT

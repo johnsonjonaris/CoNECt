@@ -4,6 +4,10 @@
 #include "ui_connectomedatainspectiondialog.h"
 #include <QDialog>
 
+/**
+  * \class ConnectomeInspectionDialog
+  */
+
 class ConnectomeInspectionDialog : public QDialog, private Ui::ConnectomeInspectionDialog
 {
     Q_OBJECT

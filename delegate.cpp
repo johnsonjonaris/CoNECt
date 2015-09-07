@@ -6,14 +6,15 @@
 
 #include "delegate.h"
 
-SpinBoxDelegate::SpinBoxDelegate(QSpinBox *sIn, QObject *parent) :
-    QItemDelegate(parent) {s = sIn;}
+SpinBoxDelegate::SpinBoxDelegate(QSpinBox *s, QObject *parent) :
+    QItemDelegate(parent),
+    s(s)
+{}
 
 QWidget *SpinBoxDelegate::createEditor(QWidget *parent,
-    const QStyleOptionViewItem &/* option */,
-    const QModelIndex &/* index */) const
+                                       const QStyleOptionViewItem &/* option */,
+                                       const QModelIndex &/* index */) const
 {
-    // create the editor as a QSpinBox with specific options
     QSpinBox *editor = new QSpinBox(parent);
     editor->setMinimum(0);
     editor->setMaximum(100);
@@ -33,7 +34,8 @@ void SpinBoxDelegate::setEditorData(QWidget *editor,
     spinBox->setValue(value);
 }
 
-void SpinBoxDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
+void SpinBoxDelegate::setModelData(QWidget *editor,
+                                   QAbstractItemModel *model,
                                    const QModelIndex &index) const
 {
     QSpinBox *spinBox = static_cast<QSpinBox*>(editor);
@@ -43,7 +45,8 @@ void SpinBoxDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
 }
 
 void SpinBoxDelegate::updateEditorGeometry(QWidget *editor,
-    const QStyleOptionViewItem &option, const QModelIndex &/* index */) const
+                                           const QStyleOptionViewItem &option,
+                                           const QModelIndex &/* index */) const
 {
     editor->setGeometry(option.rect);
 }

@@ -11,12 +11,19 @@
 
 using namespace arma;
 
+/**
+  * \class ConnectomeView
+  *
+  * A collection of UI items that visualize a brain network and allows the user
+  * to perform selection and discover actions onto the network.
+  */
+
 class ConnectomeView : public QWidget, private Ui::ConnectomeView
 {
     Q_OBJECT
-    QGraphicsRectItem *selection;
-    QGraphicsPixmapItem *nwPixmapItem;
-    uchar_mat nwImg;
+    QGraphicsRectItem *selection;           ///< rectangle selction item
+    QGraphicsPixmapItem *nwPixmapItem;      ///< network is drawn as a pixmap
+    uchar_mat nwImg;                        ///< raw data of the network
 
 signals:
     void mouseMoved( QMouseEvent *ev );
@@ -24,7 +31,7 @@ signals:
 
 public:
 
-    CView *View;
+    CView *View;                            ///< graphic view scene housing all items
 
     ConnectomeView(QWidget *parent = 0);
     ~ConnectomeView()
@@ -35,10 +42,15 @@ public:
         // selection or when deleting the scene
         qDeleteAll(this->children());
     }
+    /// plot a connectome
     void plotConnectome(const mat &NW);
+    /// remove selection rectangle
     void removeSelection();
-    void addSelection(int y);           // one line = one node (vertex)
-    void addSelection(int x,int y);     // one item = one edge
+    /// add selection rectangle on full row (one line = one node (vertex))
+    void addSelection(int y);
+    /// add selection rectangle on full row (one item = one edge)
+    void addSelection(int x, int y);
+    /// clear the whole view
     void clear();
     inline QPointF maptToViewScene(QPoint pt) { return View->mapToScene(pt);}
     inline bool viewContains(QPointF pt) { return View->sceneRect().contains(pt);}
@@ -47,6 +59,7 @@ protected slots:
     void viewMouseMoved( QMouseEvent *ev) { mouseMoved(ev);}
     void viewMouseReleased( QMouseEvent *ev) {mouseReleased(ev);}
 private slots:
+    /// adjust displayed network according to selected brightness
     void onBrightnessSliderMove(int);
 };
 

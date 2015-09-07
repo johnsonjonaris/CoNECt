@@ -1,0 +1,6 @@
+/test.bin
+*.obj
+ui_*.h
+Makefile*
+release/*
+debug/*

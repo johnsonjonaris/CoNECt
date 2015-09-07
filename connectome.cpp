@@ -222,11 +222,9 @@ bool Connectome::write(const QString &fileName, bool quiet)
     return true;
 }
 
-// get names
+/// Read the label names, assuming they are in the increasing order of the labels values
 bool Connectome::readNames(const QString &fileName)
 {
-    // this function reads the label names, it assumes they are in the
-    // increasing order of the labels values
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly))
         return false;
@@ -245,16 +243,17 @@ bool Connectome::readNames(const QString &fileName)
     return true;
 }
 
-// read a label file
+/** read a label file
+  * return:
+  * 0    correct reading
+  * 1    error reading image
+  * 2    number of volumes > 1
+  * 3    non label or unsuported data type
+  */
 int Connectome::readLabel(const QString &fileName, s16_cube &label,
                           AnalyzeHeader &hdr, ImageFileType fileType,
                           MyProgressDialog *progress)
 {
-    // this function returns:
-    // 0    correct reading
-    // 1    error reading image
-    // 2    number of volumes > 1
-    // 3    non label or unsuported data type
     if (fileName.isEmpty())
         return 1;
     if (fileType == RAW) return 1;
@@ -304,18 +303,18 @@ rowvec Connectome::strength(const mat &W)
 {
     return sum(W,0);
 }
+/**
+  * Density is the fraction of present connections to possible connections.
+  *
+  *    Input:      W,      undirected (weighted/binary) connection matrix
+  *    Output:     kden,   density
+  *                N,      number of vertices
+  *                K,      number of edges
+  *    Notes:  Assumes CIJ is undirected and has no self-connections.
+  *            Weight information is discarded.
+  */
 double Connectome::density(const mat &W)
 {
-    /*
-    Density is the fraction of present connections to possible connections.
-
-       Input:      W,      undirected (weighted/binary) connection matrix
-       Output:     kden,   density
-                   N,      number of vertices
-                   K,      number of edges
-       Notes:  Assumes CIJ is undirected and has no self-connections.
-               Weight information is discarded.
-    */
     uint N = W.n_rows;
     uvec t = find(trimatu(W)!= 0);
     double K = t.n_elem;
@@ -328,26 +327,26 @@ rowvec Connectome::degree(const mat &W)
 
 
 // clustering and segregation
+/**
+  * Node betweenness centrality is the fraction of all shortest paths in
+  * the network that contain a given node. Nodes with high values of
+  * betweenness centrality participate in a large number of shortest paths.
+  *
+  *     Input:      G,      weighted (directed/undirected) connection matrix.
+  *     Output:     BC,     node betweenness centrality vector.
+  *                 EBC,    edge betweenness centrality matrix.
+  *
+  * Notes:
+  *    The input matrix must be a mapping from weight to distance. For
+  * instance, in a weighted correlation network, higher correlations are
+  * more naturally interpreted as shorter distances, and the input matrix
+  * should consequently be some inverse of the connectivity matrix.
+  *    Betweenness centrality may be normalised to [0,1] via BC/[(N-1)(N-2)]
+  *
+  * Reference: Brandes (2001) J Math Sociol 25:163-177.
+  */
 rowvec Connectome::betweenessCentrality(const mat &G, mat &EBC)
 {
-    /*
-   Node betweenness centrality is the fraction of all shortest paths in
-   the network that contain a given node. Nodes with high values of
-   betweenness centrality participate in a large number of shortest paths.
-
-        Input:      G,      weighted (directed/undirected) connection matrix.
-        Output:     BC,     node betweenness centrality vector.
-                    EBC,    edge betweenness centrality matrix.
-
-   Notes:
-       The input matrix must be a mapping from weight to distance. For
-   instance, in a weighted correlation network, higher correlations are
-   more naturally interpreted as shorter distances, and the input matrix
-   should consequently be some inverse of the connectivity matrix.
-       Betweenness centrality may be normalised to [0,1] via BC/[(N-1)(N-2)]
-
-   Reference: Brandes (2001) J Math Sociol 25:163-177.
-    */
     uint n = G.n_rows,q = n-1,v=0,w=0;
     double Duw,DPvw;
     vec t;
@@ -455,35 +454,34 @@ double Connectome::transitivity(const mat &W)
     vec cyc3 = diagvec(t*t*t);
     return accu(cyc3)/sum(K%(K-1));
 }
+/**
+  * The optimal community structure is a subdivision of the network into
+  * nonoverlapping groups of nodes in a way that maximizes the number of
+  * within-group edges, and minimizes the number of between-group edges.
+  * The modularity is a statistic that quantifies the degree to which the
+  * network may be subdivided into such clearly delineated groups.
+  *
+  * The Louvain algorithm is a fast and accurate community detection
+  * algorithm (as of writing). The algorithm may also be used to detect
+  * hierarchical community structure.
+  *
+  *     Input:      W       undirected (weighted or binary) connection matrix.
+  *                 gamma,  modularity resolution parameter (optional)
+  *                             gamma>1     detects smaller modules
+  *                             0<=gamma<1  detects larger modules
+  *                             gamma=1     (default) classic modularity
+  *
+  *     Outputs:    Ci,     community structure
+  *                 Q,      modularity
 
+  * Note: Ci and Q may vary from run to run, due to heuristics in the
+  * algorithm. Consequently, it may be worth to compare multiple runs.
+  *
+  * Reference: Blondel et al. (2008)  J. Stat. Mech. P10008.
+  *           Reichardt and Bornholdt (2006) Phys Rev E 74:016110.
+  */
 urowvec Connectome::modularity_louvain(mat W, double *Qopt, double gamma)
 {
-    /*
-   The optimal community structure is a subdivision of the network into
-   nonoverlapping groups of nodes in a way that maximizes the number of
-   within-group edges, and minimizes the number of between-group edges.
-   The modularity is a statistic that quantifies the degree to which the
-   network may be subdivided into such clearly delineated groups.
-
-   The Louvain algorithm is a fast and accurate community detection
-   algorithm (as of writing). The algorithm may also be used to detect
-   hierarchical community structure.
-
-        Input:      W       undirected (weighted or binary) connection matrix.
-                    gamma,  modularity resolution parameter (optional)
-                                gamma>1     detects smaller modules
-                                0<=gamma<1  detects larger modules
-                                gamma=1     (default) classic modularity
-
-        Outputs:    Ci,     community structure
-                    Q,      modularity
-
-   Note: Ci and Q may vary from run to run, due to heuristics in the
-   algorithm. Consequently, it may be worth to compare multiple runs.
-
-   Reference: Blondel et al. (2008)  J. Stat. Mech. P10008.
-              Reichardt and Bornholdt (2006) Phys Rev E 74:016110.
-      */
     uint N = W.n_rows, h = 1, n = N, u =0, ma =0, mb =0;
     double s = accu(W), wm = 0, max_dQ = -1;
     uvec M, t;
@@ -545,20 +543,20 @@ urowvec Connectome::modularity_louvain(mat W, double *Qopt, double gamma)
     return Ci(h);
 }
 
+/**
+  * Participation coefficient is a measure of diversity of intermodular
+  * connections of individual nodes.
+  *  Inputs:     W,      binary/weighted, directed/undirected
+  *                      connection matrix
+  *              Ci,     community affiliation vector
+  *  Output:     P,      participation coefficient
+
+  * Note: The output for directed graphs is the "out-neighbor"
+  *   participation coefficient.
+  * Reference: Guimera R, Amaral L. Nature (2005) 433:895-900.
+  */
 rowvec Connectome::participationCoefficient(const mat &W, const urowvec &Ci)
 {
-    /*
-   Participation coefficient is a measure of diversity of intermodular
-   connections of individual nodes.
-        Inputs:     W,      binary/weighted, directed/undirected
-                            connection matrix
-                    Ci,     community affiliation vector
-        Output:     P,      participation coefficient
-
-   Note: The output for directed graphs is the "out-neighbor"
-         participation coefficient.
-   Reference: Guimera R, Amaral L. Nature (2005) 433:895-900.
-      */
     uint n = W.n_rows;
     mat binaryW = zeros(n,n);
     binaryW(find(W!=0)).fill(1);
@@ -578,18 +576,18 @@ rowvec Connectome::participationCoefficient(const mat &W, const urowvec &Ci)
     return P;
 }
 
+/**
+  * The within-module degree z-score is a within-module version of degree
+  * centrality.
+
+  *  Inputs:     W,      binary/weighted undirected connection matrix
+  *              Ci,     community affiliation vector
+  *  Output:     Z,      within-module degree z-score.
+
+  * Reference: Guimera R, Amaral L. Nature (2005) 433:895-900.
+  */
 rowvec Connectome::moduleZscore(const mat &W, const urowvec &Ci)
 {
-    /*
-   The within-module degree z-score is a within-module version of degree
-   centrality.
-
-        Inputs:     W,      binary/weighted undirected connection matrix
-                    Ci,     community affiliation vector
-        Output:     Z,      within-module degree z-score.
-
-   Reference: Guimera R, Amaral L. Nature (2005) 433:895-900.
-      */
     uint n = W.n_rows;
     rowvec Z = zeros(1,n);
     rowvec Koi;
@@ -602,37 +600,38 @@ rowvec Connectome::moduleZscore(const mat &W, const urowvec &Ci)
 }
 
 // functional integration
+
+/**
+  * The local efficiency is the global efficiency computed on the
+  *  neighborhood of the node, and is related to the clustering coefficient.
+  *
+  *  Inputs:     W,              weighted undirected or directed connection matrix
+  *                              (all weights in W must be between 0 and 1)
+  *  Output:     Eloc,           local efficiency (vector)
+
+  *  Notes:
+  *      The  efficiency is computed using an auxiliary connection-length
+  *  matrix L, defined as L_ij = 1/W_ij for all nonzero L_ij; This has an
+  *  intuitive interpretation, as higher connection weights intuitively
+  *  correspond to shorter lengths.
+  *      The weighted local efficiency broadly parallels the weighted
+  *  clustering coefficient of Onnela et al. (2005) and distinguishes the
+  *  influence of different paths based on connection weights of the
+  *  corresponding neighbors to the node in question. In other words, a path
+  *  between two neighbors with strong connections to the node in question
+  *  contributes more to the local efficiency than a path between two weakly
+  *  connected neighbors. Note that this weighted variant of the local
+  *  efficiency is hence not a strict generalization of the binary variant.
+
+  *  Algorithm:  Dijkstra's algorithm
+
+  *  References: Latora and Marchiori (2001) Phys Rev Lett 87:198701.
+  *              Onnela et al. (2005) Phys Rev E 71:065103
+  *              Fagiolo (2007) Phys Rev E 76:026107.
+  *              Rubinov M, Sporns O (2010) NeuroImage 52:1059-69
+  */
 rowvec Connectome::localEfficiency(const mat &W)
 {
-  /*
-   The local efficiency is the global efficiency computed on the
-   neighborhood of the node, and is related to the clustering coefficient.
-
-   Inputs:     W,              weighted undirected or directed connection matrix
-                               (all weights in W must be between 0 and 1)
-   Output:     Eloc,           local efficiency (vector)
-
-   Notes:
-       The  efficiency is computed using an auxiliary connection-length
-   matrix L, defined as L_ij = 1/W_ij for all nonzero L_ij; This has an
-   intuitive interpretation, as higher connection weights intuitively
-   correspond to shorter lengths.
-       The weighted local efficiency broadly parallels the weighted
-   clustering coefficient of Onnela et al. (2005) and distinguishes the
-   influence of different paths based on connection weights of the
-   corresponding neighbors to the node in question. In other words, a path
-   between two neighbors with strong connections to the node in question
-   contributes more to the local efficiency than a path between two weakly
-   connected neighbors. Note that this weighted variant of the local
-   efficiency is hence not a strict generalization of the binary variant.
-
-   Algorithm:  Dijkstra's algorithm
-
-   References: Latora and Marchiori (2001) Phys Rev Lett 87:198701.
-               Onnela et al. (2005) Phys Rev E 71:065103
-               Fagiolo (2007) Phys Rev E 76:026107.
-               Rubinov M, Sporns O (2010) NeuroImage 52:1059-69
-    */
     int n = W.n_rows;
     mat A = abs(sign(W)), L = 1/W, e ,se;
     L.diag().fill(0);
@@ -670,29 +669,27 @@ double Connectome::globalEfficiency(const mat &W)
     return accu(e)/(n*n-n);
 }
 
+/**
+  * D = pathLength(G);
+
+  * The distance matrix contains lengths of shortest paths between all
+  * pairs of nodes. An entry (u,v) represents the length of shortest path
+  * from node u to node v. The average shortest path length is the
+  * characteristic path length of the network.
+
+  *     Input:      G,      weighted directed/undirected connection matrix
+  *     Output:     D,      distance matrix
+
+  * The input matrix must be a mapping from weight to distance. For
+  * instance, in a weighted correlation network, higher correlations are
+  * more naturally interpreted as shorter distances, and the input matrix
+  * should consequently be some inverse of the connectivity matrix.
+  *    Lengths between disconnected nodes are set to Inf.
+  *    Lengths on the main diagonal are set to 0.
+  * Algorithm: Dijkstra's algorithm.
+*/
 mat Connectome::pathLength(const mat &G)
 {
-    /*
-   D = pathLength(G);
-
-   The distance matrix contains lengths of shortest paths between all
-   pairs of nodes. An entry (u,v) represents the length of shortest path
-   from node u to node v. The average shortest path length is the
-   characteristic path length of the network.
-
-        Input:      G,      weighted directed/undirected connection matrix
-        Output:     D,      distance matrix
-
-       The input matrix must be a mapping from weight to distance. For
-   instance, in a weighted correlation network, higher correlations are
-   more naturally interpreted as shorter distances, and the input matrix
-   should consequently be some inverse of the connectivity matrix.
-       Lengths between disconnected nodes are set to Inf.
-       Lengths on the main diagonal are set to 0.
-
-   Algorithm: Dijkstra's algorithm.
-   */
-
     uint n = G.n_rows,v=0;
     mat D = mat(n,n).fill(datum::inf), G1, t;
     D.diag().fill(0);
@@ -747,26 +744,26 @@ rowvec Connectome::vulnerability(const mat &W)
     return V;
 }
 
-// core structure
+/**
+  *
+  * The assortativity coefficient is a correlation coefficient between the
+  * strengths (weighted degrees) of all nodes on two opposite ends of a link.
+  *  A positive assortativity coefficient indicates that nodes tend to link to
+  *  other nodes with the same or similar strength.
+
+  *      Inputs:     CIJ,    weighted directed/undirected connection matrix
+  *      Outputs:    r,      assortativity coefficient
+
+  * Notes: The function accepts weighted networks, but all connection
+  * weights are ignored. The main diagonal should be empty. For flag 1
+  * the function computes the directed assortativity described in Rubinov
+  * and Sporns (2010) NeuroImage.
+
+  * Reference:  Newman (2002) Phys Rev Lett 89:208701
+  *             Foster et al. (2010) PNAS 107:10815–10820
+  */
 double Connectome::assortativity(const mat &W)
 {
-    /*
-   The assortativity coefficient is a correlation coefficient between the
-   strengths (weighted degrees) of all nodes on two opposite ends of a link.
-   A positive assortativity coefficient indicates that nodes tend to link to
-   other nodes with the same or similar strength.
-
-        Inputs:     CIJ,    weighted directed/undirected connection matrix
-        Outputs:    r,      assortativity coefficient
-
-   Notes: The function accepts weighted networks, but all connection
-   weights are ignored. The main diagonal should be empty. For flag 1
-   the function computes the directed assortativity described in Rubinov
-   and Sporns (2010) NeuroImage.
-
-   Reference:  Newman (2002) Phys Rev Lett 89:208701
-               Foster et al. (2010) PNAS 107:10815–10820
-      */
     rowvec str = strength(W);
     mat Wt = trimatu(W); Wt.diag().fill(0);
     umat idx = getIndex(find(Wt>0),W.n_rows,W.n_cols,0);

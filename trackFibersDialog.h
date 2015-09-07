@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include "ui_trackFibersDialog.h"
-#include "DataTypes.h"
+#include "datatypes.h"
 #include "openVol.h"
 
 using namespace std;

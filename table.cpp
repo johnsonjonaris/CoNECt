@@ -8,12 +8,12 @@ TableTree::TableTree(QWidget *parent) : QTreeWidget(parent) {
     setRootIsDecorated(false);
     setUniformRowHeights(true);
 
-    connect(this,SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),
-            this,SLOT(ItemDoubleClicked(QTreeWidgetItem*,int)));
-    connect(this,SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)),
-            this,SLOT(CurItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)));
-    connect(this,SIGNAL(itemChanged(QTreeWidgetItem*,int)),
-            this,SLOT(ItemChanged(QTreeWidgetItem*,int)));
+    connect(this, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),
+            this, SLOT(ItemDoubleClicked(QTreeWidgetItem*,int)));
+    connect(this, SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)),
+            this, SLOT(CurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)));
+    connect(this, SIGNAL(itemChanged(QTreeWidgetItem*,int)),
+            this, SLOT(ItemChanged(QTreeWidgetItem*,int)));
 }
 
 void TableTree::ItemDoubleClicked(QTreeWidgetItem *item, int col)
@@ -41,7 +41,7 @@ void TableTree::ItemChanged(QTreeWidgetItem *item, int col)
         }
 }
 
-void TableTree::CurItemChanged(QTreeWidgetItem *curItem, QTreeWidgetItem *prevItem)
+void TableTree::CurrentItemChanged(QTreeWidgetItem *curItem, QTreeWidgetItem *prevItem)
 {
     Q_UNUSED(curItem);
     // if current item is changed close the editor and prevent editing

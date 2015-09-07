@@ -11,7 +11,7 @@
 
 #include "ui_mainwindow.h"
 #include "armadillo"
-#include "DataTypes.h"
+#include "datatypes.h"
 #include "conectwiz.h"
 #include "datainspectiondialog.h"
 #include "reportdialog.h"
@@ -43,5 +43,6 @@
 #include "showmetricsdialog.h"
 #include "modulardialog.h"
 #include "connectomegeneratedialog.h"
+
 
 #endif // MAINWINDOW2_H

@@ -1,9 +1,5 @@
 #include "bspline_alg.h"
-/*
-  This implementation is an adaptation to the Matlab implementation:
-  Interactive B-spline drawing by Levente Hunyadi, found at FEX:
-  http://www.mathworks.com/matlabcentral/fileexchange/27374-b-splines
-  */
+
 QVector<QVector3D> BSPLINE::bSplineDeBoor(const QVector<QVector3D> &ctrlPoints, uint qual)
 {
     if (ctrlPoints.size() < 3)
@@ -47,11 +43,14 @@ QVector<QVector3D> BSPLINE::bSplineDeBoor(const QVector<QVector3D> &ctrlPoints, 
 }
 
 // this De Boor's Algorithm, implemented in a recursive manner
-QVector3D BSPLINE::deBoor(int k,int degree, int i, double u,
-                 const ucolvec &knots, const QVector<QVector3D> &ctrlPoints)
-{   // Please see wikipedia page for detail
-    // note that the algorithm here kind of traverses in reverse order
-    // comapred to that in the wikipedia page
+QVector3D BSPLINE::deBoor(int k,
+                          int degree,
+                          int i,
+                          double u,
+                          const ucolvec &knots,
+                          const QVector<QVector3D> &ctrlPoints
+                          )
+{
     if( k == 0)
         return ctrlPoints[i];
     else {

@@ -9,6 +9,14 @@
 #include <QMenu>
 #include <QtGui>
 
+/**
+  * \class CView
+  *
+  * This class houses graphic items. It captures mouse move, release and scrolling.
+  * It signals those events by emitting signals. It handles the shape of the cursor.
+  * It also implement a specific contex menu on the right click to allow the user
+  * to copy\save the contained view.
+  */
 class CView : public QGraphicsView
 {
     Q_OBJECT
@@ -23,6 +31,7 @@ public:
     void resetSize();
 
 protected slots:
+    /// show context menu at a right click on the view
     void showContextMenu(const QPoint& pos);
 
 protected:
@@ -40,8 +49,6 @@ protected:
         this->viewport()->setCursor(Qt::ArrowCursor);
     }
     void wheelEvent( QWheelEvent *ev );
-
-
 };
 
 

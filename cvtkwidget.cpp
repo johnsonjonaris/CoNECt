@@ -377,7 +377,12 @@ void CvtkWidget::updateEdgesColor(const Connectome &cm,
         }
     this->GetRenderWindow()->Render();
 }
-// manage selection
+
+/**
+  * xx and yy are entries in the nodeActorList.
+  * for a single node, yy is set to default = -1.
+  * for an edge, both xx and yy are needed.
+  */
 void CvtkWidget::select(int xx, int yy)
 {
     if (nodeActorList.isEmpty())
@@ -397,7 +402,7 @@ void CvtkWidget::select(int xx, int yy)
     if (xs>-1 && ys>-1 && displayedEdges(xs,ys) == 1) {
         edgeIdx = -1;
         int n = displayedEdges.n_rows;
-        // ironiclly, a for loop is faster than an algorithm here
+        // ironiclly, for loop is faster than an algorithm here
         for (int i =0;i<n;++i) {
             int j=i+1;
             for (;j<n;++j) {

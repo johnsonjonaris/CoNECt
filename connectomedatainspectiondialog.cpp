@@ -5,13 +5,20 @@ ConnectomeInspectionDialog::ConnectomeInspectionDialog(QWidget *parent) :
 {
     setupUi(this);
 
-    connect(NoChangeRadio,SIGNAL(clicked()),this,SLOT(onNoChangeCheck()));
-    connect(InvertXRadio,SIGNAL(clicked(bool)),this,SLOT(onInvertXCheck(bool)));
-    connect(InvertYRadio,SIGNAL(clicked(bool)),this,SLOT(onInvertYCheck(bool)));
-    connect(InvertZRadio,SIGNAL(clicked(bool)),this,SLOT(onInvertZCheck(bool)));
-    connect(SwapXYRadio,SIGNAL(clicked(bool)),this,SLOT(onSwapXYCheck(bool)));
-    connect(SwapXZRadio,SIGNAL(clicked(bool)),this,SLOT(onSwapXZCheck(bool)));
-    connect(SwapYZRadio,SIGNAL(clicked(bool)),this,SLOT(onSwapYZCheck(bool)));
+    connect(NoChangeRadio,SIGNAL(clicked()),
+            this,SLOT(onNoChangeCheck()));
+    connect(InvertXRadio,SIGNAL(clicked(bool)),
+            this,SLOT(onInvertXCheck(bool)));
+    connect(InvertYRadio,SIGNAL(clicked(bool)),
+            this,SLOT(onInvertYCheck(bool)));
+    connect(InvertZRadio,SIGNAL(clicked(bool)),
+            this,SLOT(onInvertZCheck(bool)));
+    connect(SwapXYRadio,SIGNAL(clicked(bool)),
+            this,SLOT(onSwapXYCheck(bool)));
+    connect(SwapXZRadio,SIGNAL(clicked(bool)),
+            this,SLOT(onSwapXZCheck(bool)));
+    connect(SwapYZRadio,SIGNAL(clicked(bool)),
+            this,SLOT(onSwapYZCheck(bool)));
 }
 
 void ConnectomeInspectionDialog::onNoChangeCheck()

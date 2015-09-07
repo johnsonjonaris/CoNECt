@@ -29,51 +29,65 @@
 #include <vtkStripper.h>
 #include <vtkPolyDataNormals.h>
 
-#include "DataTypes.h"
+#include "datatypes.h"
 #include "armadillo"
 #include "connectome.h"
 #include <QDebug>
 
 using namespace arma;
 
+/**
+  * \class CvtkWidget
+  *
+  * VTK Widget class that visualizes connectomes. Visualization uses color codes to
+  * colorize nodes and edges according to specific criteria. It also overlay brain
+  * image on visualized network.
+  */
+
 class CvtkWidget : public QVTKWidget
 {
     vtkSmartPointer<vtkRenderer>            mainRenderer;
-    QList< vtkSmartPointer<vtkActor> >      nodeActorList;
-    QList< vtkSmartPointer<vtkActor> >      edgeActorList;
-    QList< vtkSmartPointer<vtkActor> >      labelActorList;
-    vtkSmartPointer<vtkActor>               brainActor;
-    bool                                    selected;
-    int                                     xs,ys, edgeIdx;
-    uchar_mat                               displayedEdges;
+    QList< vtkSmartPointer<vtkActor> >      nodeActorList;  ///< list of all node actors
+    QList< vtkSmartPointer<vtkActor> >      edgeActorList;  ///< list of all edge actors
+    QList< vtkSmartPointer<vtkActor> >      labelActorList; ///< list of all label actors
+    vtkSmartPointer<vtkActor>               brainActor;     ///< brain actor
+    bool                                    selected;       ///<
+    int                                     xs, ys;         ///< selected edge coordinates
+    int                                     edgeIdx;        ///< selected edge index in edgeActorList
+    uchar_mat                               displayedEdges; ///< mark edges to be displayed
 
+    /// visualize brain image
     void visualizeBrain(const Connectome &cm);
 public:
     CvtkWidget(QWidget *parent);
+    /// visualize a connectome including nodes and edges
     void visualizeConnectome(const Connectome &cm,
                              const VisualizationParameters &nvp,
                              const VisualizationParameters &evp);
-    // when visualizing from scratch or changing size
+    /// visualize nodes
     void visualizeNodes(const Connectome &cm,
                         const VisualizationParameters &nvp);
+    /// visualize edges
     void visualizeEdges(const Connectome &cm,
                         const VisualizationParameters &evp);
-    // when only color change is needed
+    /// update nodes colors
     void updateNodesColor(const Connectome &cm,
                           const VisualizationParameters &nvp);
+    /// update edge colors
     void updateEdgesColor(const Connectome &cm,
                           const VisualizationParameters &evp);
-    // update labels
+    /// update nodes labels
     void updateNodesLabels(const Connectome &cm,
                            const VisualizationParameters &nvp);
+    /// highlight selected edge or node.
     void select(int xx, int yy = -1);
+    /// remove selection
     void deselect();
-    // manipulate mask
+    /// change brain image opacity
     void updateBrainMaskOpacity(int value);
+    /// change brain image visibility
     void updateBrainMaskVisibility(bool status);
-
-
-    // clear
+    /// clear widget from all its contents
     void clear();
 };
 

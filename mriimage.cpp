@@ -128,9 +128,9 @@ AnalyzeHeader prepareHeader(quint32 dim[4],ImageDataType dataType,
     return header;
 }
 
-DiffModelDimensionParam getParameters(const AnalyzeHeader &header)
+DiffusionModelDimension getParameters(const AnalyzeHeader &header)
 {
-    DiffModelDimensionParam dmp;
+    DiffusionModelDimension dmp;
     dmp.nRows = header.dime.dim[1];
     dmp.nCols = header.dime.dim[2];
     dmp.nSlices = header.dime.dim[3];
