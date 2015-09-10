@@ -19,54 +19,52 @@ unix {
 SOURCES += main.cpp\
         mainwindow.cpp \
         mtrand.cpp \
-        statsdialog.cpp \
-        openVol.cpp \
-        saveVol.cpp \
-        ShowQTableDialog.cpp \
         view.cpp \
         vectors.cpp \
-        aboutFrame.cpp \
         bspline_alg.cpp \
         delegate.cpp \
-        trackFibersDialog.cpp \
         qxtspanslider.cpp \
         table.cpp \
         roiitem.cpp \
         diffusionmodel.cpp \
         fibertracts.cpp \
         mrivtkwidget.cpp \
-        dtidialog.cpp \
         connectome.cpp \
         connectomeview.cpp \
         cview.cpp \
         cvtkwidget.cpp \
-        showmetricsdialog.cpp \
         misc_functions.cpp \
         mriimage.cpp \
-        modulardialog.cpp \
-        gtabledialog.cpp \
         dw_wizardpages.cpp \
         conectwiz.cpp \
         bna_wizardpages.cpp \
-    datainspectiondialog.cpp \
-    connectomedatainspectiondialog.cpp \
+    trackFibersDialog.cpp \
+    statsdialog.cpp \
+    sizedialog.cpp \
+    ShowQTableDialog.cpp \
+    showmetricsdialog.cpp \
+    saveVol.cpp \
     reportdialog.cpp \
+    openVol.cpp \
+    myprogressdialog.cpp \
+    modulardialog.cpp \
+    gtabledialog.cpp \
+    dtidialog.cpp \
+    datainspectiondialog.cpp \
+    connectomeview.cpp \
     connectomegeneratedialog.cpp \
-    myprogressdialog.cpp
+    connectomedatainspectiondialog.cpp \
+    aboutFrame.cpp \
+    dblqprogressdialog.cpp
+
 
 HEADERS  += mainwindow.h \
             mainwindow2.h \
             mtrand.h \
-            statsdialog.h \
-            openVol.h \
-            saveVol.h \
-            ShowQTableDialog.h \
             view.h \
             vectors.h \
-            aboutFrame.h \
             bspline_alg.h \
             delegate.h \
-            trackFibersDialog.h \
             qxtspanslider_p.h \
             qxtspanslider.h \
             qxtglobal.h \
@@ -75,7 +73,6 @@ HEADERS  += mainwindow.h \
             diffusionmodel.h \
             fibertracts.h \
             mrivtkwidget.h \
-            dtidialog.h \
             mriimage.h \
             geometryFunctions.h \
             connectome.h \
@@ -83,39 +80,55 @@ HEADERS  += mainwindow.h \
             cview.h \
             cvtkwidget.h \
             misc_functions.h \
-            showmetricsdialog.h \
-            modulardialog.h \
-            gtabledialog.h \
             conectwiz.h \
-    datainspectiondialog.h \
-    connectomedatainspectiondialog.h \
+            datatypes.h \
+    trackFibersDialog.h \
+    statsDialog.h \
+    sizedialog.h \
+    ShowQTableDialog.h \
+    showmetricsdialog.h \
+    saveVol.h \
     reportdialog.h \
-    connectomegeneratedialog.h \
+    openVol.h \
     myprogressdialog.h \
-    datatypes.h
+    modulardialog.h \
+    gtabledialog.h \
+    dtidialog.h \
+    datainspectiondialog.h \
+    connectomeview.h \
+    connectomegeneratedialog.h \
+    connectomedatainspectiondialog.h \
+    aboutFrame.h \
+    dblqprogressdialog.h
 
 
 FORMS    += mainwindow.ui \
-            statsdialog.ui \
             openVol.ui \
             saveVol.ui \
-            ShowQTableDialog.ui \
             aboutFrame.ui \
-            trackFibersDialog.ui \
-            dtidialog.ui \
             ConnectomeView.ui \
-            showmetricsdialog.ui \
-            modulardialog.ui \
             page2dw.ui \
             page1dw.ui \
             page1bna.ui \
             intropage.ui \
-            gtabledialog.ui \
-    datainspectiondialog.ui \
-    connectomedatainspectiondialog.ui \
+    trackFibersDialog.ui \
+    statsdialog.ui \
+    sizedialog.ui \
+    ShowQTableDialog.ui \
+    showmetricsdialog.ui \
+    saveVol.ui \
     reportdialog.ui \
+    openVol.ui \
+    myprogressdialog.ui \
+    modulardialog.ui \
+    gtabledialog.ui \
+    dtidialog.ui \
+    datainspectiondialog.ui \
+    ConnectomeView.ui \
     connectomegeneratedialog.ui \
-    myprogressdialog.ui
+    connectomedatainspectiondialog.ui \
+    aboutFrame.ui
+
 
 RESOURCES     = TractCreator.qrc
 
