@@ -30,14 +30,13 @@ void onCopyKeysPressed(QTableWidget *table)
     QClipboard *clipboard = QApplication::clipboard();
     clipboard->setText(tableTxt);
 }
-
+/**
+  *  This function mimics the behavior of Matlab unique
+  *  [C,IA,IC] = UNIQUE(A) such that C = A(IA) and A = C(IC).
+  *  This function returns IC
+  */
 uvec matlabUnique(const uvec &v)
 {
-    /*
-        This function mimics the behavior of Matlab unique
-        [C,IA,IC] = UNIQUE(A) such that C = A(IA) and A = C(IC).
-        This function returns IC
-      */
     if (v.n_elem == 1)
         return uvec(1).fill(0);
     uvec ndx = sort_index(v);

@@ -23,6 +23,7 @@ public:
     TableTree(QWidget *parent = 0);
 
     QVector<quint16> editableColumns;   ///< store editable columns
+
     /// set editable columns
     void setEditableColumns(QVector<quint16> l) {editableColumns = l;}
 

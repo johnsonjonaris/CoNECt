@@ -11,14 +11,10 @@
 
 using namespace arma;
 
-// FOR AN UNKOWN REASON, A COMPILER ERROR HAPPENS
-// IF THIS FUNCTION IS PUT IN THE CPP FILE
+// FOR AN UNKOWN REASON, A COMPILER ERROR HAPPENS IF THIS FUNCTION IS PUT IN THE CPP FILE
+/// this function creates a B&W color table then control its brightness. beta in [-1, +1]
 static QVector<QRgb> getColorTable(float beta)
 {
-    // this functin creates a black and white color table
-    // then controls its brightness.
-    // beta should vary from -1 to 1
-
     QVector<QRgb> cTable;
     cTable.reserve(256);
 
@@ -42,11 +38,11 @@ static QVector<QRgb> getColorTable(float beta)
         cTable.append(qRgb( c(i), c(i), c(i) ));
     return cTable;
 }
-
+/// copy table data into clipboard on copy keys pressed
 void onCopyKeysPressed(QTableWidget *table);
-
+/// implementation of matlab unique algorithm
 uvec matlabUnique(const uvec &v);
-
+/// get 3D index from linear index based on number of rows, columns and slices
 umat getIndex(const uvec &idx, int r, int c=-1, int s=-1);
 
 #endif // MISC_FUNCTIONS_H

@@ -5,6 +5,11 @@
 #include <QDialog>
 #include "ui_aboutFrame.h"
 
+/**
+  * \class AboutFrame
+  *
+  * This class displays the About dialog.
+  */
 class AboutFrame : public QDialog, public Ui::AboutFrame
 {
     Q_OBJECT
