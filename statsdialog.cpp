@@ -1,5 +1,13 @@
 #include "statsDialog.h"
 
+/**
+  * Input:
+  * fibers                  present fibers (necessary)
+  * currentSelectedFibers   pointer to selected fibers (optional)
+  * volume                  selected image (necessary)
+  * isLabel                 is selected image a label
+  */
+
 StatsDialog::StatsDialog(const FiberTracts &fibers, const QList<quint32> *selectedFibers,
                          const cube &volume, bool isLabel, QWidget *parent) : QDialog(parent)
 {

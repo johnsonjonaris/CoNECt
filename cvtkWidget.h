@@ -40,13 +40,13 @@ using namespace arma;
   * \class CvtkWidget
   *
   * VTK Widget class that visualizes connectomes. Visualization uses color codes to
-  * colorize nodes and edges according to specific criteria. It also overlay brain
+  * colorize nodes and edges according to graph theoretic metrics. It also overlay brain
   * image on visualized network.
   */
 
 class CvtkWidget : public QVTKWidget
 {
-    vtkSmartPointer<vtkRenderer>            mainRenderer;
+    vtkSmartPointer<vtkRenderer>            mainRenderer;   ///< main renderer
     QList< vtkSmartPointer<vtkActor> >      nodeActorList;  ///< list of all node actors
     QList< vtkSmartPointer<vtkActor> >      edgeActorList;  ///< list of all edge actors
     QList< vtkSmartPointer<vtkActor> >      labelActorList; ///< list of all label actors
@@ -61,24 +61,18 @@ class CvtkWidget : public QVTKWidget
 public:
     CvtkWidget(QWidget *parent);
     /// visualize a connectome including nodes and edges
-    void visualizeConnectome(const Connectome &cm,
-                             const VisualizationParameters &nvp,
+    void visualizeConnectome(const Connectome &cm, const VisualizationParameters &nvp,
                              const VisualizationParameters &evp);
     /// visualize nodes
-    void visualizeNodes(const Connectome &cm,
-                        const VisualizationParameters &nvp);
+    void visualizeNodes(const Connectome &cm, const VisualizationParameters &nvp);
     /// visualize edges
-    void visualizeEdges(const Connectome &cm,
-                        const VisualizationParameters &evp);
+    void visualizeEdges(const Connectome &cm, const VisualizationParameters &evp);
     /// update nodes colors
-    void updateNodesColor(const Connectome &cm,
-                          const VisualizationParameters &nvp);
+    void updateNodesColor(const Connectome &cm, const VisualizationParameters &nvp);
     /// update edge colors
-    void updateEdgesColor(const Connectome &cm,
-                          const VisualizationParameters &evp);
+    void updateEdgesColor(const Connectome &cm, const VisualizationParameters &evp);
     /// update nodes labels
-    void updateNodesLabels(const Connectome &cm,
-                           const VisualizationParameters &nvp);
+    void updateNodesLabels(const Connectome &cm, const VisualizationParameters &nvp);
     /// highlight selected edge or node.
     void select(int xx, int yy = -1);
     /// remove selection

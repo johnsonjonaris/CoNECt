@@ -1,12 +1,5 @@
 #include "vectors.h"
 
-/*
-    This class draws a set of intersected lines inside a square.
-    The lines, the background color, and the position of the item
-    should be passed to the constructor.
-    The item prevent the drawing of the lines if the level of details
-    (zoom) is not high enough.
-  */
 Vectors::Vectors(int x, int y, QVarLengthArray<QLineF> lines)
 {
     this->x = x;

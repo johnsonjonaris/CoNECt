@@ -12,6 +12,13 @@
 
 using namespace std;
 
+/**
+  * \class View
+  *
+  * Custom QGraphicsView that captures mouse in\out motion, press, scroll
+  * as well as keyboard presses and emits the appropriate signal.
+  *
+  */
 class View : public QGraphicsView
 {
     Q_OBJECT

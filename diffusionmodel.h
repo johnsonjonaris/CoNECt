@@ -24,6 +24,8 @@ using namespace arma;
 
 class DiffusionModel
 {
+    float longestFiber;                     ///< longest possible fiber value (mm)
+
 public:
     DiffusionModel();
 
@@ -38,7 +40,7 @@ public:
     // TOD specific parameters
     // TODO: define all TOD params in a struct
     float       th;                         ///< TOD threshold
-    mat         q,originalQ;                ///< angular distribution table (3X108)
+    mat         q,originalQ;                ///< angular distribution table
     uchar_vec   qIndex;                     ///< voxelwise index corresponding
                                             ///< to the angles in the q array per tensor
                                             ///< 4D array
@@ -118,7 +120,6 @@ public:
 
 private:
 
-    float longestFiber;         ///< store the longest possible fiber value
 
     /// create a fiber tract based on TOD probabilistic method
     void createProbabilistic_TOD_Tract(QVector3D seed,

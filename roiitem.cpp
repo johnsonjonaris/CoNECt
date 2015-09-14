@@ -1,11 +1,5 @@
 #include "roiitem.h"
 
-roiItem::roiItem(quint16 id)
-{
-    id_n = id;
-    setZValue(3);
-}
-
 void roiItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(widget);

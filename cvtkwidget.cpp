@@ -9,6 +9,12 @@ CvtkWidget::CvtkWidget(QWidget *parent): QVTKWidget(parent)
     xs = -1, ys = -1, edgeIdx = -1;
 }
 
+/**
+  * Input:
+  * cm:     connectome
+  * nvp:    node visualization parameters
+  * evp:    edge visualization parameters
+  */
 void CvtkWidget::visualizeConnectome(const Connectome &cm,
                                      const VisualizationParameters &nvp,
                                      const VisualizationParameters &evp)
@@ -19,9 +25,9 @@ void CvtkWidget::visualizeConnectome(const Connectome &cm,
     mainRenderer->Clear();
     // visualize nodes and edges
 //    visualizeBrain(cm);
-    visualizeNodes(cm,nvp);
-    updateNodesLabels(cm,nvp);
-    visualizeEdges(cm,evp);
+    visualizeNodes(cm, nvp);
+    updateNodesLabels(cm, nvp);
+    visualizeEdges(cm, evp);
     // Set a background color for the renderer
     mainRenderer->SetBackground(.2, .3, .4);
     /* It is convenient to create an initial view of the data. The

@@ -11,6 +11,7 @@
 #include <QLabel>
 #include <QKeyEvent>
 
+
 class MyQProgressDialog : public QProgressDialog
 {
     Q_OBJECT
@@ -34,6 +35,11 @@ public slots:
 
 };
 
+/**
+  * \class DblQProgressDialog
+  *
+  * Special progress dialog with two progress bars.
+  */
 class DblQProgressDialog : public QProgressDialog
 {
     Q_OBJECT

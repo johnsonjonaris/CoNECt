@@ -3,13 +3,48 @@
 
 #include <QtCore>
 
+/// selected region of interest (ROI) shape
+enum ROIShape
+{
+    FREEHAND,               ///< freehand ROI
+    OVAL,                   ///< oval shape ROI
+    RECT                    ///< rectangular shape ROI
+};
 
-enum ROIShape               { FREEHAND, OVAL, RECT };
-enum UserAction             { ROI_ACTION, VOI_ACTION};
-enum ROIType                { AND_ROI, NOT_ROI };
-enum DiffusionModelType     { DTI=0,TDF=1,ODF,SH_QBALL,EMPTY};
-enum FiberColoringMethod    { DIRECTIONAL = 0,SOLID = 1, SCALAR = 2};
-enum FiberFileType          { CONECT = 0, DTISTUDIO = 1};
+/// selected user action type
+enum UserAction
+{
+    ROI_ACTION,             ///< Regoin of interest action
+    VOI_ACTION              ///< Volume of interest action
+};
+/// selected user ROI effect
+enum ROIType
+{
+    AND_ROI,                ///< future ROI has an AND effect with previous ROI(s)
+    NOT_ROI                 ///< future ROI has an exclusion effect with previous ROI(s)
+};
+/// diffusion model type
+enum DiffusionModelType
+{
+    DTI=0,                  ///< diffusion tensor imaging
+    TDF=1,                  ///< tensor distribution function
+    ODF,                    ///< orientation distribution function
+    SH_QBALL,               ///< spherical harmonics
+    EMPTY                   ///< empty model
+};
+/// fiber tracts coloring method
+enum FiberColoringMethod
+{
+    DIRECTIONAL = 0,        ///< direction dependent
+    SOLID = 1,              ///< solid color
+    SCALAR = 2              ///< weighted by a scalar
+};
+/// fiber tract file type
+enum FiberFileType
+{
+    CONECT = 0,             ///< CoNECt file type
+    DTISTUDIO = 1           ///< DTI Studio
+};
 
 /**
   * \enum ImageDataType
@@ -68,7 +103,7 @@ struct DiffusionModelDimension
 };
 
 /**
- * \struct Analyze Header
+ * \struct Analyze Header Key
  * sizeof_header Must indicate the byte size of the header file
  * extents Should be 16384, the image file is created as contiguous with a minimum extent size
  * regular Must be ‘r’ to indicate that all images and volumes are the same size
@@ -157,8 +192,8 @@ struct AnalyzeHeader
 
 // define DTIStudio fiber header
 // define fiber header, RGB and XYZ structures
-struct  RGB_TRIPLE{quint8 r, g, b;};
-struct  TagXYZ_TRIPLE{float x, y, z;};
+struct  RGB_TRIPLE { quint8 r, g, b; };
+struct  TagXYZ_TRIPLE { float x, y, z; };
 struct  FiberHeader
 {
     qint32          nLength;            ///< fiber length;
@@ -189,6 +224,7 @@ enum SizeType {EQUAL, WEIGHT};
 enum ColorType {SAME, MODULAR, THRESHOLD};
 enum DisplayType {ALL, NONE, THRESHOLDS};
 
+/// visualization parameters, compatible for node or edge
 struct VisualizationParameters
 {
     // Display

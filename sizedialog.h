@@ -4,9 +4,11 @@
 #include <QDialog>
 #include "ui_sizedialog.h"
 
-namespace Ui {
-    class SizeDialog;
-}
+/**
+  * \class SizeDialog
+  *
+  *
+  */
 
 class SizeDialog : public QDialog, public Ui::SizeDialog
 {
