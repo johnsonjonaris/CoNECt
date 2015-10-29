@@ -34,14 +34,11 @@ public:
     CView *View;                            ///< graphic view scene housing all items
 
     ConnectomeView(QWidget *parent = 0);
-    ~ConnectomeView()
-    {
-        // we don't have to delete the QGraphicItems since
-        // nwPixmapItem is deleted when deleting the scene
-        // and selection is either deleted when removing the
-        // selection or when deleting the scene
-        qDeleteAll(this->children());
-    }
+    // we don't have to delete the QGraphicItems since
+    // nwPixmapItem is deleted when deleting the scene
+    // and selection is either deleted when removing the
+    // selection or when deleting the scene
+    ~ConnectomeView() { qDeleteAll(this->children()); }
     /// plot a connectome
     void plotConnectome(const mat &NW);
     /// remove selection rectangle
@@ -52,12 +49,13 @@ public:
     void addSelection(int x, int y);
     /// clear the whole view
     void clear();
-    inline QPointF maptToViewScene(QPoint pt) { return View->mapToScene(pt);}
-    inline bool viewContains(QPointF pt) { return View->sceneRect().contains(pt);}
+    inline QPointF maptToViewScene(QPoint pt) { return View->mapToScene(pt); }
+    inline bool viewContains(QPointF pt) { return View->sceneRect().contains(pt); }
 
 protected slots:
-    void viewMouseMoved( QMouseEvent *ev) { mouseMoved(ev);}
-    void viewMouseReleased( QMouseEvent *ev) {mouseReleased(ev);}
+    void onMouseMoved( QMouseEvent *ev) { mouseMoved(ev); }
+    void onMouseReleased( QMouseEvent *ev) { qDebug("released"); mouseReleased(ev); }
+
 private slots:
     /// adjust displayed network according to selected brightness
     void onBrightnessSliderMove(int);
