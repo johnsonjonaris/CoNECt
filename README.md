@@ -19,3 +19,9 @@ CoNECt also contains functionalities for generating, analyzing and visualizing c
 It was the first software developed in the CoNECt lab. The lab was formed as collaboration between various departments at the University of Illinois at Chicago. For more information about the CoNECt lab, please check http://conect.brain.uic.edu/.
 CoNECt was part of my PhD research in the joint research between the ECE and psychiatry departments.
 
+**Compilation**
+
+In order to compile CoNECt, the following libraries are required:
+* VTK 5.6 <http://www.vtk.org/download/>
+* armadillo <http://arma.sourceforge.net/>
+* Lapack and BLAS (included with armadillo)
