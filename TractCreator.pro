@@ -133,15 +133,18 @@ FORMS    += mainwindow.ui \
 RESOURCES     = TractCreator.qrc
 
 win32 {
-    VTK_PATH = D:/VTK/64/Install/
-    LIBS += -L$$quote($${VTK_PATH}/lib/vtk-5.6) -lvtkCommon -lvtkIO -lvtkFiltering -lvtksys -lQVTK -lvtkViews -lvtkWidgets
-    LIBS += -L$$quote($${VTK_PATH}/lib/vtk-5.6) -lvtkRendering -lvtkGraphics -lvtkImaging -lvtkmetaio -lvtkHybrid
-    LIBS += -L$$quote(E:/Programming/C++/libs/LAPACK/VS/x64) -lblas_win64_MT -llapack_win64_MT
+    Release: VTK_PATH = C:/VTK/5.10.1_2013/64/Release
+    Debug: VTK_PATH = C:/VTK/5.10.1_2013/64/Debug
 
-    INCLUDEPATH += $$quote(E:/Programming/C++/libs/armadillo4_2/include) \
-                $$quote($${VTK_PATH}/include/vtk-5.6) \
-                $$quote($${VTK_PATH}/lib/vtk-5.6) \
-                $$quote(E:/Programming/C++/libs/LAPACK/VS/x64)
+    LIBS += -L$$quote($${VTK_PATH}/lib/vtk-5.10) -lvtkCommon -lvtkIO -lvtkFiltering -lvtksys -lQVTK -lvtkViews -lvtkWidgets
+    LIBS += -L$$quote($${VTK_PATH}/lib/vtk-5.10) -lvtkRendering -lvtkGraphics -lvtkImaging -lvtkmetaio -lvtkHybrid
+    LIBS += -L$$quote(F:/Workspace/C++/libs/LAPACK/VS/x64) -lblas_win64_MT -llapack_win64_MT
+
+    INCLUDEPATH += $$quote(F:/Workspace/C++/libs/armadillo4_2/include) \
+                $$quote($${VTK_PATH}/include/vtk-5.10) \
+                $$quote($${VTK_PATH}/lib/vtk-5.10) \
+                $$quote($${VTK_PATH}/bin/) \
+                $$quote(F:/Workspace/C++/libs/LAPACK/VS/x64)
 }
 
 unix:!macx {
