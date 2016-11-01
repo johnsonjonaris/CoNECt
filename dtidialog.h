@@ -13,12 +13,16 @@ class DTIDialog : public QDialog, Ui::DTIDialog
     
 public:
     DTIDialog(QWidget *parent = 0);
-    uvec tensorOrder;
+    const uvec& getTensorOrder() const { return tensorOrder; }
     
 private slots:
     void onTensorItemSlection();
     void onPushUpButtonPress();
     void onPushDownButtonPress();
+
+private:
+    uvec tensorOrder;
+
 };
 
 #endif // DTIDIALOG_H

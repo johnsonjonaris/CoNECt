@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>178</width>
-    <height>171</height>
+    <width>148</width>
+    <height>199</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,13 +24,13 @@
        <property name="minimumSize">
         <size>
          <width>50</width>
-         <height>120</height>
+         <height>150</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>50</width>
-         <height>120</height>
+         <height>150</height>
         </size>
        </property>
        <property name="font">
@@ -101,6 +101,9 @@
      </item>
      <item>
       <layout class="QVBoxLayout" name="verticalLayout">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
        <item>
         <widget class="QPushButton" name="PushUpButton">
          <property name="minimumSize">
@@ -165,6 +168,12 @@
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="maximumSize">
+      <size>
+       <width>130</width>
+       <height>16777215</height>
+      </size>
+     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>

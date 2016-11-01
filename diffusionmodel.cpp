@@ -208,6 +208,7 @@ bool DiffusionModel::readDTI(const QString &fileName, QList<fcube> &ADC,
     DTIDialog wd;
     if(!wd.exec())
         return false;
+    const uvec& tensorOrder = wd.getTensorOrder();
 
     // read data according to its type, tensor expected to be
     // either double or float, it can not be an integer
@@ -217,12 +218,12 @@ bool DiffusionModel::readDTI(const QString &fileName, QList<fcube> &ADC,
         if (readImage(imgFileName,ft,false,progress,header,out)) {
             if (!w.orientation.isEmpty())
                 orientCubes(w.orientation, progress,header,out);
-            idx = find(wd.tensorOrder == 0,1); ADC.append(out[idx[0]]);
-            idx = find(wd.tensorOrder == 1,1); ADC.append(out[idx[0]]);
-            idx = find(wd.tensorOrder == 2,1); ADC.append(out[idx[0]]);
-            idx = find(wd.tensorOrder == 3,1); ADC.append(out[idx[0]]);
-            idx = find(wd.tensorOrder == 4,1); ADC.append(out[idx[0]]);
-            idx = find(wd.tensorOrder == 5,1); ADC.append(out[idx[0]]);
+            idx = find(tensorOrder == 0,1); ADC.append(out[idx[0]]);
+            idx = find(tensorOrder == 1,1); ADC.append(out[idx[0]]);
+            idx = find(tensorOrder == 2,1); ADC.append(out[idx[0]]);
+            idx = find(tensorOrder == 3,1); ADC.append(out[idx[0]]);
+            idx = find(tensorOrder == 4,1); ADC.append(out[idx[0]]);
+            idx = find(tensorOrder == 5,1); ADC.append(out[idx[0]]);
             out.clear();
         } else return false;
     }
@@ -231,12 +232,12 @@ bool DiffusionModel::readDTI(const QString &fileName, QList<fcube> &ADC,
         if (readImage(imgFileName,ft,false,progress,header,out)) {
             if (!w.orientation.isEmpty())
                 orientCubes(w.orientation, progress,header,out);
-            idx = find(wd.tensorOrder == 0,1); ADC.append(conv_to<fcube>::from(out[idx[0]]));
-            idx = find(wd.tensorOrder == 1,1); ADC.append(conv_to<fcube>::from(out[idx[0]]));
-            idx = find(wd.tensorOrder == 2,1); ADC.append(conv_to<fcube>::from(out[idx[0]]));
-            idx = find(wd.tensorOrder == 3,1); ADC.append(conv_to<fcube>::from(out[idx[0]]));
-            idx = find(wd.tensorOrder == 4,1); ADC.append(conv_to<fcube>::from(out[idx[0]]));
-            idx = find(wd.tensorOrder == 5,1); ADC.append(conv_to<fcube>::from(out[idx[0]]));
+            idx = find(tensorOrder == 0,1); ADC.append(conv_to<fcube>::from(out[idx[0]]));
+            idx = find(tensorOrder == 1,1); ADC.append(conv_to<fcube>::from(out[idx[0]]));
+            idx = find(tensorOrder == 2,1); ADC.append(conv_to<fcube>::from(out[idx[0]]));
+            idx = find(tensorOrder == 3,1); ADC.append(conv_to<fcube>::from(out[idx[0]]));
+            idx = find(tensorOrder == 4,1); ADC.append(conv_to<fcube>::from(out[idx[0]]));
+            idx = find(tensorOrder == 5,1); ADC.append(conv_to<fcube>::from(out[idx[0]]));
             out.clear();
         } else return false;
     }
