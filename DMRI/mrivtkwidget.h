@@ -4,7 +4,7 @@
 #include <QtGui>
 #include "datatypes.h"
 #include "armadillo"
-#include "myprogressdialog.h"
+#include "UI\myprogressdialog.h"
 
 #include <QVTKWidget.h>
 // needed for the 3 cuts visualization
@@ -40,7 +40,7 @@
 #include <vtkPolyDataWriter.h>
 #include <vtkPolyDataReader.h>
 
-#include "fibertracts.h"
+#include "DMRI\fibertracts.h"
 
 using namespace arma;
 

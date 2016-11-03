@@ -7,9 +7,9 @@
 #include "ui_page1dw.h"
 #include "ui_page2dw.h"
 #include "ui_page1bna.h"
-#include "gtabledialog.h"
+#include "UI\gtabledialog.h"
 #include "datatypes.h"
-#include "mriimage.h"
+#include "DMRI\mriimage.h"
 #include "armadillo"
 
 using namespace arma;

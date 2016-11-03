@@ -3,10 +3,10 @@
 
 #include <QtGui>
 #include <QDialog>
-#include "misc_functions.h"
-#include "myprogressdialog.h"
+#include "Algorithms\misc_functions.h"
+#include "UI\myprogressdialog.h"
 #include "ui_openVol.h"
-#include "mriimage.h"
+#include "DMRI\mriimage.h"
 #include "armadillo"
 
 using namespace arma;

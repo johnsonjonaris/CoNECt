@@ -2,7 +2,7 @@
 #define FIBERTRACTS_H
 
 #include <QtGui>
-#include "myprogressdialog.h"
+#include "UI\myprogressdialog.h"
 #include "armadillo"
 #include "datatypes.h"
 

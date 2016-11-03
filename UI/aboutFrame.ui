@@ -45,7 +45,7 @@
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap resource="TractCreator.qrc">:/images/armadillo_logo.png</pixmap>
+          <pixmap resource="../TractCreator.qrc">:/images/armadillo_logo.png</pixmap>
          </property>
          <property name="scaledContents">
           <bool>true</bool>
@@ -70,7 +70,7 @@
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap resource="TractCreator.qrc">:/images/qt-logo.png</pixmap>
+          <pixmap resource="../TractCreator.qrc">:/images/qt-logo.png</pixmap>
          </property>
          <property name="scaledContents">
           <bool>true</bool>
@@ -111,7 +111,7 @@
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap resource="TractCreator.qrc">:/images/vtk-logo.png</pixmap>
+          <pixmap resource="../TractCreator.qrc">:/images/vtk-logo.png</pixmap>
          </property>
          <property name="scaledContents">
           <bool>true</bool>
@@ -152,7 +152,7 @@
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="TractCreator.qrc">:/images/connect.png</pixmap>
+            <pixmap resource="../TractCreator.qrc">:/images/connect.png</pixmap>
            </property>
            <property name="scaledContents">
             <bool>true</bool>
@@ -245,7 +245,7 @@ p, li { white-space: pre-wrap; }
   </layout>
  </widget>
  <resources>
-  <include location="TractCreator.qrc"/>
+  <include location="../TractCreator.qrc"/>
  </resources>
  <connections/>
 </ui>

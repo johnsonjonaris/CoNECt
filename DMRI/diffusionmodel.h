@@ -8,13 +8,13 @@
 
 #include "armadillo"
 #include "datatypes.h"
-#include "myprogressdialog.h"
-#include "mtrand.h"
-#include "bspline_alg.h"
+#include "UI\myprogressdialog.h"
+#include "Algorithms\mtrand.h"
+#include "Algorithms\bspline_alg.h"
 #include "fibertracts.h"
 #include "mriimage.h"
-#include "openVol.h"
-#include "dtidialog.h"
+#include "UI\openVol.h"
+#include "UI\dtidialog.h"
 
 #include <time.h>
 #include <sys/timeb.h>

@@ -18,7 +18,7 @@
 class Vectors : public QGraphicsItem
 {
 public:
-    Vectors(int x, int y, QVarLengthArray<QLineF> lines);
+    Vectors(int x, int y, const QVarLengthArray<QLineF> &lines);
     /// return the bouding rectangle of the vector item
     QRectF boundingRect() const { return QRectF(0, 0, 1, 1); }
     /// paint a set of lines on top of each other

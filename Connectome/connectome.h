@@ -3,10 +3,10 @@
 
 #include <QtCore>
 #include <QTextStream>
-#include "fibertracts.h"
-#include "misc_functions.h"
-#include "myprogressdialog.h"
-#include "mriimage.h"
+#include "DMRI\fibertracts.h"
+#include "Algorithms\misc_functions.h"
+#include "UI\myprogressdialog.h"
+#include "DMRI\mriimage.h"
 #include "armadillo"
 
 using namespace arma;

@@ -3,8 +3,8 @@
 
 #include <QDialog>
 #include "ui_statsdialog.h"
-#include "fibertracts.h"
-#include "misc_functions.h"
+#include "DMRI\fibertracts.h"
+#include "Algorithms\misc_functions.h"
 #include "armadillo"
 
 using namespace arma;

@@ -1,6 +1,6 @@
 #include "vectors.h"
 
-Vectors::Vectors(int x, int y, QVarLengthArray<QLineF> lines)
+Vectors::Vectors(int x, int y, const QVarLengthArray<QLineF> &lines)
 {
     this->x = x;
     this->y = y;
@@ -20,7 +20,7 @@ void Vectors::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     QPen pen = painter->pen();
     pen.setWidth(0);
     painter->setPen(pen);
-    pen.setColor(Qt::black);
+    pen.setColor(Qt::white);
     painter->setPen(pen);
     painter->drawLines(lines.data(), lines.size());
 }

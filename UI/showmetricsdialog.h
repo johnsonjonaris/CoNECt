@@ -3,8 +3,8 @@
 
 #include <QDialog>
 #include "ui_showmetricsdialog.h"
-#include "connectome.h"
-#include "misc_functions.h"
+#include "Connectome\connectome.h"
+#include "Algorithms\misc_functions.h"
 #include "armadillo"
 using namespace arma;
 

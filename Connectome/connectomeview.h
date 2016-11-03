@@ -4,7 +4,7 @@
 #include <QWidget>
 #include "armadillo"
 #include "cview.h"
-#include "misc_functions.h"
+#include "Algorithms\misc_functions.h"
 #include "ui_ConnectomeView.h"
 
 #include <QDebug>

@@ -1,4 +1,4 @@
-#include "conectwiz.h"
+#include "Wizard\conectwiz.h"
 
 Page1BNA::Page1BNA(QWidget *parent) : QWizardPage(parent)
 {

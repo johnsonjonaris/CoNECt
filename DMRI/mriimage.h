@@ -3,7 +3,7 @@
 
 #include <QtCore>
 #include <QMessageBox>
-#include "myprogressdialog.h"
+#include "UI\myprogressdialog.h"
 #include <QFileInfo>
 #include "armadillo"
 #include "datatypes.h"

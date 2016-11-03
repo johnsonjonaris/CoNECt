@@ -218,12 +218,12 @@ bool DiffusionModel::readDTI(const QString &fileName, QList<fcube> &ADC,
         if (readImage(imgFileName,ft,false,progress,header,out)) {
             if (!w.orientation.isEmpty())
                 orientCubes(w.orientation, progress,header,out);
-            idx = find(tensorOrder == 0,1); ADC.append(out[idx[0]]);
-            idx = find(tensorOrder == 1,1); ADC.append(out[idx[0]]);
-            idx = find(tensorOrder == 2,1); ADC.append(out[idx[0]]);
-            idx = find(tensorOrder == 3,1); ADC.append(out[idx[0]]);
-            idx = find(tensorOrder == 4,1); ADC.append(out[idx[0]]);
-            idx = find(tensorOrder == 5,1); ADC.append(out[idx[0]]);
+            idx = find(tensorOrder == 0,1); ADC.append(out[idx[0]]); // Dxx
+            idx = find(tensorOrder == 1,1); ADC.append(out[idx[0]]); // Dyy
+            idx = find(tensorOrder == 2,1); ADC.append(out[idx[0]]); // Dzz
+            idx = find(tensorOrder == 3,1); ADC.append(out[idx[0]]); // Dxy
+            idx = find(tensorOrder == 4,1); ADC.append(out[idx[0]]); // Dxz
+            idx = find(tensorOrder == 5,1); ADC.append(out[idx[0]]); // Dyz
             out.clear();
         } else return false;
     }

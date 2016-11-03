@@ -6,9 +6,9 @@
 #include <QMessageBox>
 #include <QEvent>
 #include <QWheelEvent>
-#include "myprogressdialog.h"
+#include "UI\myprogressdialog.h"
 #include "datatypes.h"
-#include "mriimage.h"
+#include "DMRI\mriimage.h"
 #include "ui_datainspectiondialog.h"
 #include "armadillo"
 
