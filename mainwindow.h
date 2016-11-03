@@ -100,17 +100,23 @@ private slots:
     void tab1ChangeAction (int selected); // change tabs
     void tab2ChangeAction (int selected); // change tabs
     // updating views
-    void showCoronalOnly(); void showSagittalOnly();    void showAxialOnly();
+    void showCoronalOnly();
+    void showSagittalOnly();
+    void showAxialOnly();
     void showVectorOnly();
     void show3DOnly();
     // file control
     void openModel();
     void closeAll();
-    void openImage();       void closeImage();          void saveImage();
-    void openFiber();                                   void saveFiber();
+    void openImage();
+    void closeImage();
+    void saveImage();
+    void openFiber();
+    void saveFiber();
     void onWizardButtonPress();
     //zooming control
-    void zoomInPressed(bool status);    void zoomOutPressed(bool status);
+    void zoomInPressed(bool status);
+    void zoomOutPressed(bool status);
     // updating views from spinners
     void updateCoronalSlice();
     void updateSagittalSlice();
@@ -127,8 +133,12 @@ private slots:
     void handleMouseMoveAxial(QMouseEvent *);
     void handleMousePressAxial(QMouseEvent *);
     // updating vector table
-    void updateInvertX();   void updateInvertY();       void updateInvertZ();
-    void updateSwapXY();    void updateSwapXZ();        void updateSwapYZ();
+    void updateInvertX();
+    void updateInvertY();
+    void updateInvertZ();
+    void updateSwapXY();
+    void updateSwapXZ();
+    void updateSwapYZ();
     void updateNormal(bool);
     void showTable();
     // handle mouse, key press and mouse press Events
