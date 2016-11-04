@@ -54,7 +54,6 @@ void View::clear()
 void View::zoom(int level)
 {
     // don't allow scale less than a specific value
-    //int smallestSide = qMin(currentScale*sliceWidth, currentScale*sliceHeight*abs(aspectRatio));
     if ((level < 0) && (currentScale < minScale))
         return;
     double factor = qPow(1.05, level);
