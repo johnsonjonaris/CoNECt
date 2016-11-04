@@ -34,7 +34,7 @@ class MainWindow : public QMainWindow, public Ui::MainWindow
     QList < QStringList >       cTablesLabels;
     QVector<QRgb>               cTable;
     quint32                     nRowsImg,nColsImg,nSlicesImg, nVoxImg;
-    float                       dxImg,dyImg,dzImg, dxByDyImg,dzByDxImg,dzByDyImg;
+    float                       dxImg,dyImg,dzImg;
     double                      minActVol, maxActVol;
 
     /// loaded Images
@@ -95,7 +95,7 @@ public slots:
 
 private slots:
     //
-    void changeCutDirection ();
+    void changeVectorCutDirection ();
     // updating tabs
     void tab1ChangeAction (int selected); // change tabs
     void tab2ChangeAction (int selected); // change tabs

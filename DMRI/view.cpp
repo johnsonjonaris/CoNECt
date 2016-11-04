@@ -7,10 +7,10 @@ View::View(Type type, QWidget *parent) :
 
 View::View(Type type, QGraphicsScene * scene, QWidget * parent) :
     QGraphicsView(scene, parent)
-  , verticalLine(nullptr), horizontalLine(nullptr)
-  , verticalLimit(0), horizontalLimit(0)
-  , crosshairX(0), crosshairY(0)
-  , type(type)
+  , verticalLine(nullptr), horizontalLine(nullptr), slice(nullptr)
+  , sliceHeight(1), sliceWidth(1)
+  , crosshairX(0), crosshairY(0), type(type)
+  , aspectRatio(1.0), currentScale(1.0), minScale(1.0), minPixSize(200)
 {
     setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
     setDragMode(QGraphicsView::ScrollHandDrag);
@@ -47,18 +47,29 @@ void View::clear()
         scen->clear();
         verticalLine = nullptr;
         horizontalLine = nullptr;
+        slice = nullptr;
     }
+}
+
+void View::zoom(int level)
+{
+    // don't allow scale less than a specific value
+    //int smallestSide = qMin(currentScale*sliceWidth, currentScale*sliceHeight*abs(aspectRatio));
+    if ((level < 0) && (currentScale < minScale))
+        return;
+    double factor = qPow(1.05, level);
+    currentScale *= factor;
+    scale(factor, factor);
 }
 
 void View::wheelEvent(QWheelEvent *ev)
 {
     int numSteps = ev->delta()/120;
-    double factor = qPow(1.125, numSteps);
-    scale(factor, factor);
+    zoom(numSteps);
     emit wheelScrolled( ev );
 }
 
-void View::resetSize(float r)
+void View::resetSize()
 {
     /*
       let scene size be X1,Y1, viewport size be X2,Y2,
@@ -68,12 +79,14 @@ void View::resetSize(float r)
     if (!this->isEnabled())
         return;
     double margin = 0.95;
-    double widthRatio = double(this->width())/double(this->sceneRect().width());
-    double heightRatio = double(this->height())/double(this->sceneRect().height());
-    double factor = qMin(widthRatio, heightRatio/abs(r))*margin;
+    double widthRatio = double(width())/double(sliceWidth);
+    double heightRatio = double(height())/double(sliceHeight);
+    double factor = qMax(qMin(widthRatio, heightRatio/abs(aspectRatio))*margin,
+                         minScale);
     QMatrix matrix;
-    matrix.scale(factor,-factor*r);
-    this->setMatrix(matrix);
+    matrix.scale(factor,-factor*aspectRatio);
+    setMatrix(matrix);
+    currentScale = factor;
 }
 
 void View::setCrosshairLocation(int x, int y)
@@ -95,10 +108,10 @@ void View::setCrosshairLocation(int x, int y)
     QPen pen = QPen(Qt::DashLine);
     pen.setWidthF(0.6);
     pen.setColor(horizontalColor);
-    horizontalLine = scen->addLine(QLineF(0,y+0.5,horizontalLimit,y+0.5),pen);
+    horizontalLine = scen->addLine(QLineF(0,y+0.5,sliceWidth,y+0.5),pen);
     horizontalLine->setZValue(1);
     pen.setColor(verticalColor);
-    verticalLine = scen->addLine(QLineF(x+0.5,0,x+0.5,verticalLimit),pen);
+    verticalLine = scen->addLine(QLineF(x+0.5,0,x+0.5,sliceHeight),pen);
     verticalLine->setZValue(1);
     crosshairX = x;
     crosshairY = y;
@@ -109,15 +122,18 @@ void View::updateSlice(const QPixmap& image)
     QGraphicsScene *scen = scene();
     if (scen == nullptr)
         return;
-    scen->clear();
-    // the lines were delete with the clear() call
-    verticalLine = nullptr;
-    horizontalLine = nullptr;
-
-    scen->addPixmap(image)->setZValue(0);
-    verticalLimit = image.height();
-    horizontalLimit = image.width();
-    setCrosshairLocation(crosshairX, crosshairY);
+    if (slice) {
+        scen->removeItem(slice);
+        delete slice;
+        slice = nullptr;
+    }
+    slice = scen->addPixmap(image);
+    slice->setZValue(0);
+    sliceHeight = image.height();
+    sliceWidth = image.width();
+    minScale = qMax(minPixSize/double(sliceWidth),
+                            minPixSize/(double(sliceHeight*abs(aspectRatio))));
+    setSceneRect(0,0,sliceWidth,sliceHeight);
 }
 
 void View::showContextMenu(const QPoint &pos)
@@ -146,31 +162,9 @@ void View::showContextMenu(const QPoint &pos)
     delete myMenu;
 }
 
-//void View::updateSlice(const mat &activeVol,const QVector<QRgb> &cTable,
-//                       bool isGrayscale,double minActVol,double maxActVol,
-//                       int slice)
-//{
-//    QImage tmp;
-//    if (isGrayscale) {
-//        mat a = 255.0*((activeVol(span(slice),span::all,span::all)
-//                        -minActVol)/(maxActVol-minActVol));
-//        uchar_mat b = conv_to<uchar_mat>::from(a);
-//        tmp = QImage(b.memptr(),b.n_rows,b.n_cols,b.n_rows,QImage::Format_Indexed8);
-//        tmp.setColorTable(cTable);
-//    }
-//    else {
-//        tmp = QImage(nColsImg, nSlicesImg,QImage::Format_ARGB32);
-//        for (uint i=0; i<nSlicesImg;i++)
-//            for (uint j=0; j<nColsImg;j++)
-//                tmp.setPixel(j,i,cTable.at( int(activeVol(slice,j,i)) ));
-//    }
-////    QPen pen = QPen(Qt::DashLine);
-////    pen.setWidthF(0.2);
-//    this->scene()->clear();
-//    this->scene()->addPixmap(QPixmap::fromImage(tmp));
-////    pen.setColor(Qt::blue);
-////    this->scene()->addLine(QLineF(0,selAxSlice+0.5,nColsImg,selAxSlice+0.5),pen);
-////    pen.setColor(Qt::green);
-////    this->scene()->addLine(QLineF(selSagSlice+0.5,0,selSagSlice+0.5,nSlicesImg),pen);
-//    this->setSceneRect(0,0,tmp.width(),tmp.height());
-//}
+void View::setAspectRatio(double r)
+{
+    aspectRatio = r;
+    minScale = qMax(minPixSize/double(sliceWidth),
+                    minPixSize/(double(sliceHeight*abs(aspectRatio))));
+}

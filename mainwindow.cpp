@@ -149,9 +149,9 @@ void MainWindow::connectSignals()
     connect(VectorsView,SIGNAL(paintEv(QPaintEvent*)),
             this,SLOT(handlePaintEventVector(QPaintEvent*)));
     // cut direction change in the vector view
-    connect(CoronalVectorButton,SIGNAL(clicked()),this,SLOT(changeCutDirection()));
-    connect(SagitalVectorButton,SIGNAL(clicked()),this,SLOT(changeCutDirection()));
-    connect(AxialVectorButton,SIGNAL(clicked()),this,SLOT(changeCutDirection()));
+    connect(CoronalVectorButton,SIGNAL(clicked()),this,SLOT(changeVectorCutDirection()));
+    connect(SagitalVectorButton,SIGNAL(clicked()),this,SLOT(changeVectorCutDirection()));
+    connect(AxialVectorButton,SIGNAL(clicked()),this,SLOT(changeVectorCutDirection()));
     connect(VectorSliceSpinner,SIGNAL(valueChanged(int)),this,SLOT(updateMainSlice(int)));
     // gradient table actions
     connect(Normal, SIGNAL(clicked(bool)), this, SLOT(updateNormal(bool)));
@@ -380,7 +380,7 @@ void MainWindow::resetImageControls()
     // reset image imfo
     nRowsImg = nColsImg = nSlicesImg = nVoxImg = 0;
     minActVol = maxActVol = 0;
-    dxImg = dyImg = dzImg = dxByDyImg = dzByDxImg = dzByDyImg = 0.0;
+    dxImg = dyImg = dzImg = 0.0;
     // no img files loaded by type
     nLoadedUchar = nLoadedShort = nLoadedInt = 0;
     nLoadedFloat = nLoadedDouble = nLoadedImg = 0;
@@ -409,7 +409,7 @@ void MainWindow::resetVectorControls()
     InvertZ->setChecked(false);
     Normal->setChecked(true);
     // 2D View
-    VectorsView->scene()->clear();
+    VectorsView->clear();
 
 }
 void MainWindow::resetFiberControls()
@@ -1005,6 +1005,7 @@ void MainWindow::openModel()
     DisplayTab->setCurrentIndex(0);
     // update GUI according to model file
     VectorSliceSpinner->setMaximum(dm.nRows-1);
+    VectorsView->setAspectRatio(-dm.dz/dm.dy);
     ImageComboBox->setCurrentIndex(0);
     dxImg = dm.dx; dyImg = dm.dy; dzImg = dm.dz;
     // update new volume information
@@ -1750,9 +1751,9 @@ void MainWindow::activeImageChanged()
     nRowsImg = activeVol.n_rows;
     nColsImg = activeVol.n_cols;
     nSlicesImg = activeVol.n_slices;
-    dxByDyImg = dxImg/dyImg;
-    dzByDxImg = dzImg/dxImg;
-    dzByDyImg = dzImg/dyImg;
+    CoronalView->setAspectRatio(dzImg/dyImg);
+    SagittalView->setAspectRatio(dzImg/dxImg);
+    AxialView->setAspectRatio(dxImg/dyImg);
     minActVol = activeVol.min();
     maxActVol = activeVol.max();
     // select slices
@@ -2043,20 +2044,23 @@ void MainWindow::saveFiber()
 }
 
 // Change the images when chosing another slice direction
-void MainWindow::changeCutDirection()
+void MainWindow::changeVectorCutDirection()
 {
     allowMainUpdate = false; // prevent any update in the slice until done    
     if(CoronalVectorButton->isChecked()) {
         selModelSlice = qMin(selCorSlice,dm.nRows-1);
         VectorSliceSpinner->setMaximum(dm.nRows-1);
+        VectorsView->setAspectRatio(-dm.dz/dm.dy);
     }
     else if(SagitalVectorButton->isChecked()) {
         selModelSlice = qMin(selSagSlice,dm.nCols-1);
         VectorSliceSpinner->setMaximum(dm.nCols-1);
+        VectorsView->setAspectRatio(-dm.dz/dm.dx);
     }
     else if(AxialVectorButton->isChecked()) {
         selModelSlice = qMin(selAxSlice,dm.nSlices-1);
         VectorSliceSpinner->setMaximum(dm.nSlices-1);
+        VectorsView->setAspectRatio(-dm.dx/dm.dy);
     }
     VectorSliceSpinner->setValue(selModelSlice);
     updateColorSlice(); // update mainColoredImage
@@ -2228,27 +2232,22 @@ void MainWindow::onAxialSpinnerChange(int SelSlice)
 void MainWindow::updateCoronalSize()
 {
     if (CoronalView->scene()->isActive() && resetSize)
-        CoronalView->resetSize(dzByDyImg);
+        CoronalView->resetSize();
 }
 void MainWindow::updateSagittalSize()
 {
     if (SagittalView->scene()->isActive() && resetSize)
-        SagittalView->resetSize(dzByDxImg);
+        SagittalView->resetSize();
 }
 void MainWindow::updateAxialSize()
 {
     if (AxialView->scene()->isActive() && resetSize)
-        AxialView->resetSize(dxByDyImg);
+        AxialView->resetSize();
 }
 void MainWindow::updateVectorSize()
 {
     if (!dm.isEmpty() && resetSize) {
-        if (CoronalVectorButton->isChecked())
-            VectorsView->resetSize(-dm.dz/dm.dy);
-        else if (SagitalVectorButton->isChecked())
-            VectorsView->resetSize(-dm.dz/dm.dx);
-        else if (AxialVectorButton->isChecked())
-            VectorsView->resetSize(-dm.dx/dm.dy);
+        VectorsView->resetSize();
     }
 }
 void MainWindow::updateLabelsSize()
@@ -2442,9 +2441,9 @@ void MainWindow::handleMousePressCoronal(QMouseEvent *ev)
     if (ev->button() == Qt::MidButton)
     {
         if (ZoomInButton->isChecked())
-            CoronalView->scale(1.1,1.1);
+            CoronalView->zoom(1);
         else if (ZoomOutButton->isChecked())
-            CoronalView->scale(1/1.1,1/1.1);
+            CoronalView->zoom(-1);
         else {
             QPointF pt = CoronalView->mapToScene(ev->pos());
             selSagSlice = qFloor(pt.x());
@@ -2460,9 +2459,9 @@ void MainWindow::handleMousePressSagittal(QMouseEvent *ev)
     if (ev->button() == Qt::MidButton)
     {
         if (ZoomInButton->isChecked())
-            SagittalView->scale(1.1,1.1);
+            SagittalView->zoom(1);
         else if (ZoomOutButton->isChecked())
-            SagittalView->scale(1/1.1,1/1.1);
+            SagittalView->zoom(-1);
         else {
             QPointF pt = SagittalView->mapToScene(ev->pos());
             selCorSlice = qFloor(pt.x());
@@ -2478,9 +2477,9 @@ void MainWindow::handleMousePressAxial(QMouseEvent *ev)
     if (ev->button() == Qt::MidButton)
     {
         if (ZoomInButton->isChecked())
-            AxialView->scale(1.1,1.1);
+            AxialView->zoom(1);
         else if (ZoomOutButton->isChecked())
-            AxialView->scale(1/1.1,1/1.1);
+            AxialView->zoom(-1);
         else {
             QPointF pt = AxialView->mapToScene(ev->pos());
             selCorSlice = qFloor(pt.y());
@@ -2551,7 +2550,7 @@ void MainWindow::updateVectorsDTI()
 
     // now draw vectors
     ROIs.clear(); // needed for changes in Gradient table
-    VectorsView->scene()->clear();
+    VectorsView->clear();
     QVarLengthArray<QLineF> lineData;
     float posX, posY, negX, negY;
     int width = mainColoredImage.width();
@@ -2610,10 +2609,7 @@ void MainWindow::updateVectorsDTI()
     // needed for changes in Gradient table
     while (!ROIs.isEmpty())
         ROIs.removeLast();
-    VectorsView->scene()->addPixmap(QPixmap::fromImage(mainColoredImage));
-    VectorsView->scene()->setSceneRect(0,0,
-                                        mainColoredImage.width(),
-                                        mainColoredImage.height());
+    VectorsView->updateSlice(QPixmap::fromImage(mainColoredImage));
 }
 
 void MainWindow::updateVectorsTOD()
@@ -2723,8 +2719,8 @@ void MainWindow::updateVectorsTOD()
         }
     }
     // now draw vectors
-    VectorsView->scene()->clear();
-    VectorsView->scene()->addPixmap(QPixmap::fromImage(mainColoredImage));
+    VectorsView->clear();
+    VectorsView->updateSlice(QPixmap::fromImage(mainColoredImage));
     // needed for changes in Gradient table
     while (!ROIs.isEmpty())
         ROIs.removeLast();
@@ -2745,18 +2741,15 @@ void MainWindow::updateVectorsTOD()
             lineData.clear();
         }
     }
-    VectorsView->scene()->setSceneRect(0,0,
-                                        mainColoredImage.width(),
-                                        mainColoredImage.height());
 }
 // handle mouse motion press in the MainView -> ROI drawing
 void MainWindow::handleMousePressVector(QMouseEvent *ev)
 {
     if (ev->button() == Qt::MidButton) {
         if (ZoomInButton->isChecked())
-            VectorsView->scale(1.1,1.1);
+            VectorsView->zoom(1);
         else if (ZoomOutButton->isChecked())
-            VectorsView->scale(1/1.1,1/1.1);
+            VectorsView->zoom(-1);
     }
     else if (ev->button() == Qt::LeftButton && !UncheckROI_Button->isChecked()) {
         QPointF pt = VectorsView->mapToScene(ev->pos());

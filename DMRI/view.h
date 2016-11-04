@@ -23,9 +23,6 @@ class View : public QGraphicsView
 {
     Q_OBJECT
 
-
-
-
 public:
 
     enum class Type {
@@ -38,7 +35,7 @@ public:
     View(View::Type type, QWidget *parent = 0);
     View(View::Type type, QGraphicsScene * scene, QWidget * parent = 0);
 
-    void resetSize(float r);
+    void resetSize();
 
     /**
      * @brief updateSlice updating the current image
@@ -57,6 +54,18 @@ public:
      * @brief clear clear all the contents of the View
      */
     void clear();
+
+    /**
+     * @brief setAspectRatio sets the aspect ratio of the image X/Y
+     * @param r aspect ratio
+     */
+    void setAspectRatio(double r);
+
+    /**
+     * @brief zoom zoom the scene by this value
+     * @param level if positive: zoom in, if negative zoom out
+     */
+    void zoom(int level);
 
 signals:
 
@@ -99,14 +108,20 @@ protected:
     }
 
 private:
+
+    QGraphicsPixmapItem *slice;
     QGraphicsLineItem   *verticalLine, *horizontalLine;
     Type type;                              ///< type of the view
     QColor  verticalColor,                  ///< color of the vertical crosshair
             horizontalColor;                ///< color of the horizontal crosshair
-    int verticalLimit,                      ///< the highest Y value of the displayed slice
-        horizontalLimit;                    ///< the highest X value of the displayed slice
+    int sliceHeight,                        ///< the highest Y value of the displayed slice
+        sliceWidth;                         ///< the highest X value of the displayed slice
     int crosshairX,                         ///< current X value of the crosshair
         crosshairY;                         ///< current Y value of the crosshair
+    double aspectRatio;                     ///< aspect ratio X/Y of the input image
+    double currentScale;                    ///< current scale value
+    double minScale;                        ///< min scale value
+    const quint16 minPixSize;               ///< min pix size of an image
 };
 
 #endif
