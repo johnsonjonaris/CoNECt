@@ -1,8 +1,17 @@
 #include "view.h"
 
 
-View::View(QWidget *parent) : QGraphicsView(parent) {
-    this->setScene(new QGraphicsScene(parent));
+View::View(Type type, QWidget *parent) :
+    View(type, new QGraphicsScene(parent), parent)
+{}
+
+View::View(Type type, QGraphicsScene * scene, QWidget * parent) :
+    QGraphicsView(scene, parent)
+  , verticalLine(nullptr), horizontalLine(nullptr)
+  , verticalLimit(0), horizontalLimit(0)
+  , crosshairX(0), crosshairY(0)
+  , type(type)
+{
     setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
     setDragMode(QGraphicsView::ScrollHandDrag);
     setMouseTracking(true);
@@ -10,16 +19,35 @@ View::View(QWidget *parent) : QGraphicsView(parent) {
     setBackgroundBrush(palette().color(QPalette::Normal, QPalette::Window));
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),
         this, SLOT(showContextMenu(const QPoint&)));
+    switch (type) {
+    case Type::CORONAL:
+        verticalColor = Qt::green;
+        horizontalColor = Qt::blue;
+        setStyleSheet("border: 2px solid red");
+        break;
+    case Type::SAGITTAL:
+        verticalColor = Qt::red;
+        horizontalColor = Qt::blue;
+        setStyleSheet("border: 2px solid green");
+        break;
+    case Type::AXIAL:
+        verticalColor = Qt::red;
+        horizontalColor = Qt::green;
+        setStyleSheet("border: 2px solid blue");
+        break;
+    default:
+        break;
+    }
 }
 
-View::View(QGraphicsScene * scene, QWidget * parent) : QGraphicsView(scene, parent) {
-    setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
-    setDragMode(QGraphicsView::ScrollHandDrag);
-    setMouseTracking(true);
-    setContextMenuPolicy(Qt::CustomContextMenu);
-    setBackgroundBrush(palette().color(QPalette::Normal, QPalette::Window));
-    connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),
-        this, SLOT(showContextMenu(const QPoint&)));
+void View::clear()
+{
+    QGraphicsScene *scen = scene();
+    if (scen) {
+        scen->clear();
+        verticalLine = nullptr;
+        horizontalLine = nullptr;
+    }
 }
 
 void View::wheelEvent(QWheelEvent *ev)
@@ -39,28 +67,72 @@ void View::resetSize(float r)
       */
     if (!this->isEnabled())
         return;
-    double widthRatio, heightRatio, factor;
-    widthRatio = double(this->width())/double(this->sceneRect().width());
-    heightRatio = double(this->height())/double(this->sceneRect().height());
-    factor = qMin(widthRatio,heightRatio/abs(r))*0.95;
+    double margin = 0.95;
+    double widthRatio = double(this->width())/double(this->sceneRect().width());
+    double heightRatio = double(this->height())/double(this->sceneRect().height());
+    double factor = qMin(widthRatio, heightRatio/abs(r))*margin;
     QMatrix matrix;
     matrix.scale(factor,-factor*r);
     this->setMatrix(matrix);
 }
 
+void View::setCrosshairLocation(int x, int y)
+{
+    QGraphicsScene *scen = scene();
+    if (scen == nullptr)
+        return;
+    if (verticalLine) {
+        scen->removeItem(verticalLine);
+        delete verticalLine;
+        verticalLine = nullptr;
+    }
+    if (horizontalLine) {
+        scen->removeItem(horizontalLine);
+        delete horizontalLine;
+        horizontalLine = nullptr;
+    }
+
+    QPen pen = QPen(Qt::DashLine);
+    pen.setWidthF(0.6);
+    pen.setColor(horizontalColor);
+    horizontalLine = scen->addLine(QLineF(0,y+0.5,horizontalLimit,y+0.5),pen);
+    horizontalLine->setZValue(1);
+    pen.setColor(verticalColor);
+    verticalLine = scen->addLine(QLineF(x+0.5,0,x+0.5,verticalLimit),pen);
+    verticalLine->setZValue(1);
+    crosshairX = x;
+    crosshairY = y;
+}
+
+void View::updateSlice(const QPixmap& image)
+{
+    QGraphicsScene *scen = scene();
+    if (scen == nullptr)
+        return;
+    scen->clear();
+    // the lines were delete with the clear() call
+    verticalLine = nullptr;
+    horizontalLine = nullptr;
+
+    scen->addPixmap(image)->setZValue(0);
+    verticalLimit = image.height();
+    horizontalLimit = image.width();
+    setCrosshairLocation(crosshairX, crosshairY);
+}
+
 void View::showContextMenu(const QPoint &pos)
 {
     QMenu *myMenu = new QMenu;
-    QAction *saveAs, *Copy;
+    QAction *saveAs, *copy;
     saveAs = myMenu->addAction("Save Image As");
-    Copy = myMenu->addAction("Copy Image");
+    copy = myMenu->addAction("Copy Image");
 
     QAction* selectedItem = myMenu->exec(this->mapToGlobal(pos));
 
     if (selectedItem != NULL) {
         QPixmap img = QPixmap::grabWidget(this->viewport(),
                                              this->mapFromScene(this->sceneRect().toRect()).boundingRect());
-        if (selectedItem == Copy)
+        if (selectedItem == copy)
             QApplication::clipboard()->setPixmap(img, QClipboard::Clipboard);
         else {
              // writes pixmap in PNG format

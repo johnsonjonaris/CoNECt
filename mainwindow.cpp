@@ -16,18 +16,15 @@ void MainWindow::createCustomWidgets()
 {
     // add custom Views
     // add custom diffusion widgets
-    VectorsView = new View(VectorFrame);
+    VectorsView = new View(View::Type::VECTOR, VectorFrame);
     verticalLayout_19->addWidget(VectorsView);
 
-    CoronalView = new View(CorFrame);
+    CoronalView = new View(View::Type::CORONAL ,CorFrame);
     verticalLayout_16->addWidget(CoronalView);
-    CoronalView->setStyleSheet("border: 2px solid red");
-    SagittalView = new View(SagFrame);
+    SagittalView = new View(View::Type::SAGITTAL, SagFrame);
     verticalLayout_17->addWidget(SagittalView);
-    SagittalView->setStyleSheet("border: 2px solid green");
-    AxialView = new View(AxFrame);
+    AxialView = new View(View::Type::AXIAL, AxFrame);
     verticalLayout_18->addWidget(AxialView);
-    AxialView->setStyleSheet("border: 2px solid blue");
     // add custom connectome controls
     CnctView = new ConnectomeView(ConnectomeFrame);
     horizontalLayout_11->addWidget(CnctView);
@@ -362,9 +359,9 @@ void MainWindow::resetImageControls()
     OpacitySlider->setValue(99);
     UncheckZoomButton->setChecked(true);
     // 2D View
-    CoronalView->scene()->clear();
-    SagittalView->scene()->clear();
-    AxialView->scene()->clear();
+    CoronalView->clear();
+    SagittalView->clear();
+    AxialView->clear();
     cTable.clear();
     // initialize 3D
     VTKWidget->clear();
@@ -737,6 +734,7 @@ void MainWindow::generateFibers()
     for (uint i = 1; i<nLoadedImg+1;i++)
         list.append(ImageComboBox->itemText(i));
     w.setLoadedImagesList(list);
+    // TODO move to TrackFibersDialog
     if (dm.type() == DTI) {
         // Enable FACT
         w.TrackingMethodBox->setItemData(0,33,Qt::UserRole-1);
@@ -2125,15 +2123,8 @@ void MainWindow::updateCoronalSlice()
                 pixel[i+j*nColsImg] = cTable.at( activeVol(selSagSlice,i,j) );
 //                tmp.setPixel(i,j,cTable.at( int(activeVol(selCorSlice,i,j)) ));
     }
-    QPen pen = QPen(Qt::DashLine);
-    pen.setWidthF(0.2);
-    CoronalView->scene()->clear();
-    CoronalView->scene()->addPixmap(QPixmap::fromImage(tmp));
-    pen.setColor(Qt::blue);
-    CoronalView->scene()->addLine(QLineF(0,selAxSlice+0.5,nColsImg,selAxSlice+0.5),pen);
-    pen.setColor(Qt::green);
-    CoronalView->scene()->addLine(QLineF(selSagSlice+0.5,0,selSagSlice+0.5,nSlicesImg),pen);
-    CoronalView->setSceneRect(0,0,tmp.width(),tmp.height());
+    CoronalView->updateSlice(QPixmap::fromImage(tmp));
+    CoronalView->setCrosshairLocation(selSagSlice, selAxSlice);
     // update 3D
     VTKWidget->changeCoronalSlice(selCorSlice);
 }
@@ -2158,15 +2149,8 @@ void MainWindow::updateSagittalSlice()
                 pixel[i+j*nRowsImg] = cTable.at( activeVol(i,selSagSlice,j) );
 //                 tmp.setPixel(i,j,cTable.at( activeVol(i,selSagSlice,j) ));
     }
-    QPen pen = QPen(Qt::DashLine);
-    pen.setWidthF(0.2);
-    SagittalView->scene()->clear();
-    SagittalView->scene()->addPixmap(QPixmap::fromImage(tmp));
-    pen.setColor(Qt::blue);
-    SagittalView->scene()->addLine(QLineF(0,selAxSlice+0.5,nRowsImg,selAxSlice+0.5),pen);
-    pen.setColor(Qt::red);
-    SagittalView->scene()->addLine(QLineF(selCorSlice+0.5,0,selCorSlice+0.5,nSlicesImg),pen);
-    SagittalView->setSceneRect(0,0,tmp.width(),tmp.height());
+    SagittalView->updateSlice(QPixmap::fromImage(tmp));
+    SagittalView->setCrosshairLocation(selCorSlice, selAxSlice);
     // update 3D
     VTKWidget->changeSagittalSlice(selSagSlice);
 }
@@ -2190,15 +2174,9 @@ void MainWindow::updateAxialSlice()
                 pixel[i+j*nColsImg] = cTable.at( activeVol(j,i,selAxSlice) );
 //                tmp.setPixel(i,j,cTable.at( activeVol(j,i,selAxSlice) ));
     }
-    QPen pen = QPen(Qt::DashLine);
-    pen.setWidthF(0.2);
-    AxialView->scene()->clear();
-    AxialView->scene()->addPixmap(QPixmap::fromImage(tmp));
-    pen.setColor(Qt::red);
-    AxialView->scene()->addLine(QLineF(0,selCorSlice+0.5,nColsImg,selCorSlice+0.5),pen);
-    pen.setColor(Qt::green);
-    AxialView->scene()->addLine(QLineF(selSagSlice+0.5,0,selSagSlice+0.5,nRowsImg),pen);
-    AxialView->setSceneRect(0,0,tmp.width(),tmp.height());
+
+    AxialView->updateSlice(QPixmap::fromImage(tmp));
+    AxialView->setCrosshairLocation(selSagSlice, selCorSlice);
     // update 3D
     VTKWidget->changeAxialSlice(selAxSlice);
 }
@@ -2568,7 +2546,7 @@ void MainWindow::updateVectorsDTI()
 {
     if (dm.isEmpty() || dm.type() != DTI)
         return;
-    /*
+
     float delta = 0.5;
 
     // now draw vectors
@@ -2576,57 +2554,59 @@ void MainWindow::updateVectorsDTI()
     VectorsView->scene()->clear();
     QVarLengthArray<QLineF> lineData;
     float posX, posY, negX, negY;
+    int width = mainColoredImage.width();
+    int height = mainColoredImage.height();
     if(CoronalVectorButton->isChecked())
     {
-        for (int x = 0; x < mainColoredImage.width(); x++) {
-            for (int y = 0; y < mainColoredImage.height(); y++) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
                 if (dm.Mask(selModelSlice,x,y)) {
                     posX = delta*dm.eVecPx(selModelSlice,x,y); negX = posX;
                     posY = delta*dm.eVecPz(selModelSlice,x,y); negY = posY;
                     lineData.append(QLineF(-negX+0.5,negY+0.5,posX+0.5,-posY+0.5 ) );
                 }
                 VectorsView->scene()->addItem(new Vectors(
-                                                   QColor(mainColoredImage.pixel(x, y)),
-                                                   x, y, lineData));
+                                                   //QColor(mainColoredImage.pixel(x, y)),
+                                                   x, height-1-y, lineData));
                 lineData.clear();
             }
         }
     }
     else if(SagitalVectorButton->isChecked())
     {
-        for (int x = 0; x < mainColoredImage.width(); x++) {
-            for (int y = 0; y < mainColoredImage.height(); y++) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
                 if (dm.Mask(x,selModelSlice,y)) {
                     posX = delta*dm.eVecPy(x,selModelSlice,y); negX = posX;
                     posY = delta*dm.eVecPz(x,selModelSlice,y); negY = posY;
                     lineData.append(QLineF(-negX+0.5,negY+0.5,posX+0.5,-posY+0.5 ) );
                 }
                 VectorsView->scene()->addItem(new Vectors(
-                                                   QColor(mainColoredImage.pixel(x, y)),
-                                                   x, y, lineData));
+                                                   //QColor(mainColoredImage.pixel(x, y)),
+                                                   x, height-1-y, lineData));
                 lineData.clear();
             }
         }
     }
     else if(AxialVectorButton->isChecked())
     {
-        for (int x = 0; x < mainColoredImage.width(); x++) {
-            for (int y = 0; y < mainColoredImage.height(); y++) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
                 if (dm.Mask(x,y,selModelSlice)) {
                     posX = delta*dm.eVecPx(x,y,selModelSlice); negX = posX;
                     posY = delta*dm.eVecPy(x,y,selModelSlice); negY = posY;
                     lineData.append(QLineF(-negX+0.5,negY+0.5,posX+0.5,-posY+0.5 ) );
                 }
                 VectorsView->scene()->addItem(new Vectors(
-                                                   QColor(mainColoredImage.pixel(x, y)),
-                                                   x, y, lineData));
+                                                   //QColor(mainColoredImage.pixel(x, y)),
+                                                   y, width-1-x, lineData));
                 lineData.clear();
             }
         }
     }
-    */
+
     // now draw vectors
-    VectorsView->scene()->clear();
+    //VectorsView->scene()->clear();
     // needed for changes in Gradient table
     while (!ROIs.isEmpty())
         ROIs.removeLast();

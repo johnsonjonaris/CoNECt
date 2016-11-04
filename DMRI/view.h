@@ -23,19 +23,49 @@ class View : public QGraphicsView
 {
     Q_OBJECT
 
+
+
+
+public:
+
+    enum class Type {
+        CORONAL,
+        SAGITTAL,
+        AXIAL,
+        VECTOR
+    };
+
+    View(View::Type type, QWidget *parent = 0);
+    View(View::Type type, QGraphicsScene * scene, QWidget * parent = 0);
+
+    void resetSize(float r);
+
+    /**
+     * @brief updateSlice updating the current image
+     * @param image Image to be displayed
+     */
+    void updateSlice(const QPixmap& image);
+
+    /**
+     * @brief setCrosshairLocation updating the current crosshair
+     * @param x X location of the crosshair
+     * @param y Y location of the crosshair
+     */
+    void setCrosshairLocation(int x, int y);
+
+    /**
+     * @brief clear clear all the contents of the View
+     */
+    void clear();
+
 signals:
+
     void mouseMoved( QMouseEvent *ev );
     void mousePressed( QMouseEvent *ev );
     void keyPressed( QKeyEvent *ev );
     void mouseReleased( QMouseEvent *ev );
     void wheelScrolled( QWheelEvent *ev );
     void paintEv( QPaintEvent *ev );
-
-public:
-    View(QWidget *parent = 0);
-    View(QGraphicsScene * scene, QWidget * parent = 0);
-    void resetSize(float r);
-//    void updateSlice();
 
 protected slots:
     void showContextMenu(const QPoint& pos);
@@ -68,6 +98,15 @@ protected:
         emit paintEv( ev );
     }
 
+private:
+    QGraphicsLineItem   *verticalLine, *horizontalLine;
+    Type type;                              ///< type of the view
+    QColor  verticalColor,                  ///< color of the vertical crosshair
+            horizontalColor;                ///< color of the horizontal crosshair
+    int verticalLimit,                      ///< the highest Y value of the displayed slice
+        horizontalLimit;                    ///< the highest X value of the displayed slice
+    int crosshairX,                         ///< current X value of the crosshair
+        crosshairY;                         ///< current Y value of the crosshair
 };
 
 #endif
