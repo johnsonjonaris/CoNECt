@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include "armadillo"
-#include "DMRI\view.h"
+#include "UI\view.h"
 #include "Algorithms\misc_functions.h"
 #include "ui_ConnectomeView.h"
 

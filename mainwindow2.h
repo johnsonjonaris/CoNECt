@@ -18,10 +18,10 @@
 #include "UI\myprogressdialog.h"
 // visualization and GUI
 #include "UI\qxtspanslider.h"
-#include "DMRI\view.h"
+#include "UI\view.h"
+#include "UI\delegate.h"
 #include "DMRI\vectors.h"
 #include "DMRI\mrivtkwidget.h"
-#include "UI\delegate.h"
 #include "DMRI\roiitem.h"
 // dialogs
 #include "UI\statsDialog.h"
