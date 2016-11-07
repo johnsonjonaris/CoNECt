@@ -3516,15 +3516,15 @@ void MainWindow::openConnectome()
     // focus tabs to connectome
     DisplayTab->setCurrentIndex(1);
     ControlTab->setCurrentIndex(3);
-    // visualize
+    // visualize and enable controls
+    CnctView->setEnabled(true);
     CnctView->plotConnectome(cm.getNW());
     progress->setValue(2);
     CVTKWidget->visualizeConnectome(cm,getNodalVP(),getEdgeVP());
     progress->setValue(3);
-    // enable vis and control areas
     CVTKWidget->setEnabled(true);
-    CnctView->setEnabled(true);
     enableConnectomeControls(true);
+    adjustConnectomeViewSize();
     delete progress;
 }
 
@@ -3889,13 +3889,13 @@ void MainWindow::generateConnectome()
     // focus tabs to connectome
     DisplayTab->setCurrentIndex(1);
     ControlTab->setCurrentIndex(3);
-    // visualize
+    // visualize and enable controls
+    CnctView->setEnabled(true);
     CnctView->plotConnectome(cm.getNW());
     CVTKWidget->visualizeConnectome(cm,getNodalVP(),getEdgeVP());
-    // enable vis and control areas
     CVTKWidget->setEnabled(true);
-    CnctView->setEnabled(true);
     enableConnectomeControls(true);
+    adjustConnectomeViewSize();
 }
 
 void MainWindow::onConnectomeMaskOpacityChange(int value)
@@ -3920,4 +3920,12 @@ void MainWindow::onSaveMetricsButtonPress()
     if (fi.suffix().isEmpty())
         fileName += ".txt";
     cm.writeMetrics(fileName);
+}
+
+void MainWindow::adjustConnectomeViewSize()
+{
+    QList<int> currentSizes;
+    currentSizes.append(ConectomeView->width()*0.7);
+    currentSizes.append(ConectomeView->width()*0.3);
+    splitterCnct->setSizes(currentSizes);
 }

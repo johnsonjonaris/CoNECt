@@ -253,6 +253,7 @@ private:
     void enableFiberControls(bool);
     void enableLabelControls(bool);
     void enableConnectomeControls(bool);
+    void adjustConnectomeViewSize();
     // wizard stuff
     bool processDTI_DWI_Subject(const QString &dwiFile,
                                 ImageFileType inType,
