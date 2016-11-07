@@ -17,6 +17,13 @@ using namespace std;
   *
   * Custom QGraphicsView that captures mouse in\out motion, press, scroll
   * as well as keyboard presses and emits the appropriate signal.
+  * The class accepts a QImage slice to be drawn and a location for a crosshair.
+  * A min pixel size limits the zoom out, it is defaulted to 200 pixel of the
+  * smallest side of the visualized image.
+  * The class also defines 5 Types for the visualized image: a CORONAL, SAGITTAL
+  * or AXIAL anatomical cut; a VECTOR color image or a more GENERAL image which
+  * can be any image.
+  * An appropriate frame color will be drawn according to the chosen Type.
   *
   */
 class View : public QGraphicsView
@@ -29,12 +36,16 @@ public:
         CORONAL,
         SAGITTAL,
         AXIAL,
-        VECTOR
+        VECTOR,
+        GENERAL
     };
 
     View(View::Type type, QWidget *parent = 0);
     View(View::Type type, QGraphicsScene * scene, QWidget * parent = 0);
 
+    /**
+     * @brief resetSize the method rescales the visualized image to fit the View.
+     */
     void resetSize();
 
     /**
@@ -66,6 +77,12 @@ public:
      * @param level if positive: zoom in, if negative zoom out
      */
     void zoom(int level);
+
+    /**
+     * @brief setMinPixSize set the min pixel size of the slice
+     * @param value
+     */
+    void setMinPixSize(int value) { minPixSize = value; }
 
 signals:
 
@@ -121,7 +138,7 @@ private:
     double aspectRatio;                     ///< aspect ratio X/Y of the input image
     double currentScale;                    ///< current scale value
     double minScale;                        ///< min scale value
-    const quint16 minPixSize;               ///< min pix size of an image
+    quint16 minPixSize;                     ///< min pix size of an image
 };
 
 #endif

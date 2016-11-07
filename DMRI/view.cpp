@@ -75,7 +75,7 @@ void View::resetSize()
       we want the factor f to be < X2/X1 and Y2/(Y1*|r|)
       since we will scale X1 by f and Y1 by f*r
       */
-    if (!this->isEnabled())
+    if (!isEnabled())
         return;
     double margin = 0.95;
     double widthRatio = double(width())/double(sliceWidth);
@@ -131,7 +131,7 @@ void View::updateSlice(const QPixmap& image)
     sliceHeight = image.height();
     sliceWidth = image.width();
     minScale = qMax(minPixSize/double(sliceWidth),
-                            minPixSize/(double(sliceHeight*abs(aspectRatio))));
+                    minPixSize/(double(sliceHeight*abs(aspectRatio))));
     setSceneRect(0,0,sliceWidth,sliceHeight);
 }
 
@@ -142,11 +142,11 @@ void View::showContextMenu(const QPoint &pos)
     saveAs = myMenu->addAction("Save Image As");
     copy = myMenu->addAction("Copy Image");
 
-    QAction* selectedItem = myMenu->exec(this->mapToGlobal(pos));
+    QAction* selectedItem = myMenu->exec(mapToGlobal(pos));
 
     if (selectedItem != NULL) {
-        QPixmap img = QPixmap::grabWidget(this->viewport(),
-                                             this->mapFromScene(this->sceneRect().toRect()).boundingRect());
+        QPixmap img = QPixmap::grabWidget(viewport(),
+                                             mapFromScene(sceneRect().toRect()).boundingRect());
         if (selectedItem == copy)
             QApplication::clipboard()->setPixmap(img, QClipboard::Clipboard);
         else {

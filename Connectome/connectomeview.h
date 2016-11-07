@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include "armadillo"
-#include "cview.h"
+#include "DMRI\view.h"
 #include "Algorithms\misc_functions.h"
 #include "ui_ConnectomeView.h"
 
@@ -22,8 +22,7 @@ class ConnectomeView : public QWidget, private Ui::ConnectomeView
 {
     Q_OBJECT
     QGraphicsRectItem *selection;           ///< rectangle selction item
-    QGraphicsPixmapItem *nwPixmapItem;      ///< network is drawn as a pixmap
-    uchar_mat nwImg;                        ///< raw data of the network
+    uchar_mat nwImg;                         ///< raw data of the network
 
 signals:
     void mouseMoved( QMouseEvent *ev );
@@ -31,7 +30,7 @@ signals:
 
 public:
 
-    CView *View;                            ///< graphic view scene housing all items
+    View *view;                            ///< graphic view scene housing all items
 
     ConnectomeView(QWidget *parent = 0);
     // we don't have to delete the QGraphicItems since
@@ -49,12 +48,12 @@ public:
     void addSelection(int x, int y);
     /// clear the whole view
     void clear();
-    inline QPointF maptToViewScene(QPoint pt) { return View->mapToScene(pt); }
-    inline bool viewContains(QPointF pt) { return View->sceneRect().contains(pt); }
+    inline QPointF maptToViewScene(QPoint pt) { return view->mapToScene(pt); }
+    inline bool viewContains(QPointF pt) { return view->sceneRect().contains(pt); }
 
 protected slots:
-    void onMouseMoved( QMouseEvent *ev) { mouseMoved(ev); }
-    void onMouseReleased( QMouseEvent *ev) { qDebug("released"); mouseReleased(ev); }
+    void onMouseMoved( QMouseEvent *ev) { emit mouseMoved(ev); }
+    void onMouseReleased( QMouseEvent *ev) { emit mouseReleased(ev); }
 
 private slots:
     /// adjust displayed network according to selected brightness

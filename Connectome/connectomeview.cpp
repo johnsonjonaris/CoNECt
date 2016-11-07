@@ -3,24 +3,25 @@
 ConnectomeView::ConnectomeView(QWidget *parent) : QWidget(parent) {
 
     setupUi(this);
-    View = new CView(frame);
-    verticalLayout_2->addWidget(View);
-    connect(View,SIGNAL(mouseMoved(QMouseEvent*)),
-            this,SLOT(viewMouseMoved(QMouseEvent*)));
-    connect(View,SIGNAL(mouseReleased(QMouseEvent*)),
-            this,SLOT(viewMouseReleased(QMouseEvent*)));
+    view = new View(View::Type::GENERAL, frame);
+    view->setAspectRatio(-1.);
+    view->setMinPixSize(400);
+    verticalLayout_2->addWidget(view);
+    connect(view,SIGNAL(mouseMoved(QMouseEvent*)),
+            this,SLOT(onMouseMoved(QMouseEvent*)));
+    connect(view,SIGNAL(mouseReleased(QMouseEvent*)),
+            this,SLOT(onMouseReleased(QMouseEvent*)));
     connect(BrightnessSlider,SIGNAL(valueChanged(int)),
             this,SLOT(onBrightnessSliderMove(int)));
     // initialize selection
     selection = NULL;
-    nwPixmapItem = NULL;
 }
 
 void ConnectomeView::plotConnectome(const mat &NW)
 {
     if (NW.is_empty())
         return;
-    this->clear();
+    clear();
     // normalize network and save it for further control
     nwImg.clear();
     nwImg = conv_to<uchar_mat>::from(255.0*(NW-NW.min())/(NW.max()-NW.min()));
@@ -28,9 +29,8 @@ void ConnectomeView::plotConnectome(const mat &NW)
     QImage img = QImage(nwImg.memptr(),nwImg.n_rows,nwImg.n_cols,
                         nwImg.n_rows,QImage::Format_Indexed8);
     img.setColorTable(cTable);
-    nwPixmapItem = View->scene()->addPixmap(QPixmap::fromImage(img));
-    View->setSceneRect(0,0,NW.n_rows,NW.n_cols);
-    View->resetSize();
+    view->updateSlice(QPixmap::fromImage(img));
+    view->resetSize();
     // prepare colorbar
     uchar_vec t = linspace<uchar_vec>(255,0,BarLabel->height());
     QImage bar = QImage(t.memptr(),1,t.n_elem,1,QImage::Format_Indexed8);
@@ -43,7 +43,7 @@ void ConnectomeView::plotConnectome(const mat &NW)
 void ConnectomeView::removeSelection()
 {
     if (selection) {
-        View->scene()->removeItem(selection);
+        view->scene()->removeItem(selection);
         delete selection;
         selection = NULL;
     }
@@ -51,15 +51,15 @@ void ConnectomeView::removeSelection()
 
 void ConnectomeView::addSelection(int y)
 {
-    this->removeSelection();
+    removeSelection();
     QPen p;
     p.setColor(Qt::red);
     p.setWidth(0);
     selection = new QGraphicsRectItem();
     selection->setPen(p);
-    selection->setRect(0,y,View->sceneRect().width(),1);
+    selection->setRect(0,y,view->sceneRect().width(),1);
     selection->setZValue(3);
-    View->scene()->addItem(selection);
+    view->scene()->addItem(selection);
 }
 
 void ConnectomeView::addSelection(int x, int y)
@@ -72,14 +72,13 @@ void ConnectomeView::addSelection(int x, int y)
     selection->setPen(p);
     selection->setRect(x,y,1,1);
     selection->setZValue(3);
-    View->scene()->addItem(selection);
+    view->scene()->addItem(selection);
 }
 
 void ConnectomeView::clear()
 {
     removeSelection();
-    View->scene()->clear();
-    nwPixmapItem = NULL;
+    view->clear();
     MinLabel->clear();
     MaxLabel->clear();
     BarLabel->clear();
@@ -101,17 +100,8 @@ void ConnectomeView::onBrightnessSliderMove(int value)
     QImage bar = QImage(t.memptr(),1,t.n_elem,1,QImage::Format_Indexed8);
     bar.setColorTable(cTable);
     BarLabel->setPixmap(QPixmap::fromImage(bar));
-    // network
-    // we remove the old image and delete it, note that we
-    // were not able to use clear for the scene since this
-    // might delete the selection as well, since clear removes
-    // items and delete them too.
-    if (nwPixmapItem) {
-        View->scene()->removeItem(nwPixmapItem);
-        delete nwPixmapItem;
-    }
     QImage img = QImage(nwImg.memptr(),nwImg.n_rows,nwImg.n_cols,
                         nwImg.n_rows,QImage::Format_Indexed8);
     img.setColorTable(cTable);
-    nwPixmapItem = View->scene()->addPixmap(QPixmap::fromImage(img));
+    view->updateSlice(QPixmap::fromImage(img));
 }
