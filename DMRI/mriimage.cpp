@@ -32,8 +32,6 @@ bool readHeader(QString headerFileName,AnalyzeHeader& header,ImageFileType fileT
     return true;
 }
 
-/*************************************************************************************************/
-
 // write header function
 bool writeHeader(QString headerFileName, AnalyzeHeader header)
 {
@@ -52,6 +50,7 @@ bool writeHeader(QString headerFileName, AnalyzeHeader header)
     file.close();
     return true;
 }
+
 
 // prepare header
 AnalyzeHeader prepareHeader(quint32 dim[4],ImageDataType dataType,
@@ -89,7 +88,7 @@ AnalyzeHeader prepareHeader(quint32 dim[4],ImageDataType dataType,
     header.dime.pixdim[6]        = 0;
     header.dime.pixdim[7]        = 0;
     header.dime.vox_offset       = (fileType == ANALYZE)?0:352;
-    header.dime.datatype         = dataType;
+    header.dime.datatype         = (dataType == DT_BINARY)?DT_UNSIGNED_CHAR:dataType;
     header.dime.funused1         =0.0;
     header.dime.funused2         =0.0;
     header.dime.funused3         =0.0;
@@ -100,16 +99,14 @@ AnalyzeHeader prepareHeader(quint32 dim[4],ImageDataType dataType,
     header.dime.glmin            = INT_MAX;
     header.dime.glmax            = INT_MIN;
 
-    if (dataType == DT_BINARY) {
-        header.dime.datatype     = DT_UNSIGNED_CHAR;
+    if (dataType == DT_BINARY)
         header.dime.bitpix       = 8;
-    }
     else if (dataType == DT_UNSIGNED_CHAR)
         header.dime.bitpix       = 8;
     else if (dataType == DT_SIGNED_SHORT)
         header.dime.bitpix       = 16;
     else if (dataType == DT_SIGNED_INT || dataType == DT_FLOAT)
-        header.dime.bitpix = 32;
+        header.dime.bitpix       = 32;
     else if (dataType == DT_DOUBLE)
         header.dime.bitpix       = 64;
 
@@ -128,14 +125,16 @@ AnalyzeHeader prepareHeader(quint32 dim[4],ImageDataType dataType,
     return header;
 }
 
+
+
 DiffusionModelDimension getParameters(const AnalyzeHeader &header)
 {
     DiffusionModelDimension dmp;
-    dmp.nRows = header.dime.dim[1];
-    dmp.nCols = header.dime.dim[2];
-    dmp.nSlices = header.dime.dim[3];
-    dmp.dx = header.dime.pixdim[1];
-    dmp.dy = header.dime.pixdim[2];
-    dmp.dz = header.dime.pixdim[3];
+    dmp.nRows       = header.dime.dim[1];
+    dmp.nCols       = header.dime.dim[2];
+    dmp.nSlices     = header.dime.dim[3];
+    dmp.dx          = header.dime.pixdim[1];
+    dmp.dy          = header.dime.pixdim[2];
+    dmp.dz          = header.dime.pixdim[3];
     return dmp;
 }
