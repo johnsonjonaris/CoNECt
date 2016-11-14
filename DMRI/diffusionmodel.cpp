@@ -162,6 +162,7 @@ bool DiffusionModel::readDTI(const QString &fileName,QList<fcube> &ADC,
     if(!readDTI(fileName,ADC,header,progress))
         return false;
     setDTI(ADC,metrics,header,progress);
+    return true;
 }
 
 bool DiffusionModel::readDTI(const QString &fileName, QList<fcube> &ADC,
@@ -274,7 +275,7 @@ void DiffusionModel::setDTI(const QList<fcube> &ADC, QList<fcube> &metrics,
     eVecPx = metrics.takeAt(7);
 
     // create mask for FA > 0.45
-    Mask = conv_to<uchar_cube>::from(round(FA+0.45));
+    Mask = conv_to<uchar_cube>::from(round(FA+0.4));
 }
 
 bool DiffusionModel::readDWI(const QString &fileName, ImageFileType fileType,
@@ -294,7 +295,7 @@ bool DiffusionModel::readDWI(const QString &fileName, ImageFileType fileType,
     // Acquire information from the header
     uint dt = header.dime.datatype;
     // read data according to its type, diffusion data can not be float or double
-    if (dt == DT_UNSIGNED_CHAR) {
+    /*if (dt == DT_UNSIGNED_CHAR) {
         QList< uchar_cube > out = QList< uchar_cube >();
         if (readImage(imgFileName,fileType,false,progress,header,out)) {
             for (int i =0;i<out.size();i++)
@@ -302,20 +303,23 @@ bool DiffusionModel::readDWI(const QString &fileName, ImageFileType fileType,
             out.clear();
         } else return false;
     }
-    else if (dt == DT_SIGNED_SHORT) {
+    else*/
+    if (dt == DT_SIGNED_SHORT) {
         if (readImage(imgFileName,fileType,false,progress,header,dwi)) {
         } else return false;
     }
-    else if (dt == DT_SIGNED_INT) {
+    /*else if (dt == DT_SIGNED_INT) {
         QList< s32_cube > out = QList< s32_cube >();
         if(readImage(imgFileName,fileType,false,progress,header,out)) {
             for (int i =0;i<out.size();i++)
                 dwi.append(conv_to<s16_cube>::from(out[i]));
             out.clear();
         } else return false;
-    }
+    }*/
     else {
-        QMessageBox::critical(0,"Faulty data","Non integer data can not be used for diffusion.");
+        QMessageBox::critical(0,"Faulty data",
+                              "Input data type is not compatible with expected "
+                              "data of type unsigned short.");
         return false;
     }
     return true;
@@ -357,12 +361,12 @@ bool DiffusionModel::computeDTIModel(QList<s16_cube> &dwi, mat gTable,
     progress->setValue(0);
     progress->show();
 
-    // prepare B matrix
+    // prepare B matrix: b*[gx^2 gy^2 gz^2 2*gx*gy 2*gx*gz 2*gy*gz]
     mat B = gTable%gTable;                          // gx^2 gy^2 gz^2
     B.reshape(B.n_rows,6);
-    B.col(3) = 2*gTable.col(0)%gTable.col(1);       // gxgy
-    B.col(4) = 2*gTable.col(0)%gTable.col(2);       // gxgz
-    B.col(5) = 2*gTable.col(1)%gTable.col(2);       // gygz
+    B.col(3) = 2*gTable.col(0)%gTable.col(1);       // 2*gx*gy
+    B.col(4) = 2*gTable.col(0)%gTable.col(2);       // 2*gx*gz
+    B.col(5) = 2*gTable.col(1)%gTable.col(2);       // 2*gy*gz
     B *= bValue;
     if (!pinv(B,B))
         return false;
@@ -370,18 +374,21 @@ bool DiffusionModel::computeDTIModel(QList<s16_cube> &dwi, mat gTable,
     ADC.clear();
     for (int i = 0;i<6;++i)
         ADC.append(zeros<fcube>(r,c,s));
-    vec norSig = zeros<vec>(dwi.size()), adc = zeros<vec>(6);
+    vec norSignal = zeros<vec>(dwi.size()),
+            adc = zeros<vec>(6);
     for (uint z = 0; z < s; ++z) {
         progress->setLabelText(QString("Computing ADC for slice %1 of %2.").arg(z).arg(s));
         for (uint x = 0; x < r; ++x)
             for (uint y = 0; y < c; ++y) {
                 if (b0(x,y,z) >= nLevel) {
+                    // normalized signal = -log(S(g)/S(0)) = g^T D g
                     for (int i =0; i< dwi.size();++i)
-                        norSig(i) = dwi.at(i)(x,y,z)/b0(x,y,z);                    
-                    norSig = -arma::log(norSig);
+                        norSignal(i) = dwi.at(i)(x,y,z)/b0(x,y,z);
+                    norSignal = -arma::log(norSignal);
                     // correct inf issue, replace it with -log(0.9999)
-                    norSig(find(norSig == datum::inf)).fill(1e-5);
-                    adc = B*norSig;
+                    norSignal(find(norSignal == datum::inf)).fill(1e-5);
+                    adc = B*norSignal;
+                    // D is symmetric -> only 6 values are unique
                     for (int i =0;i<6;++i)
                         ADC[i](x,y,z) = adc(i);
                 }
@@ -411,7 +418,7 @@ void DiffusionModel::computeDTIStuff(const QList<fcube> &ADC, QList<fcube> &metr
 
     fvec eigVal;
     fmat eigVec, Tensor;
-    float avgD, tmp;
+    float MD /*mean diffusivity*/, tmp;
     for (uint z = 0; z < s; ++z) {
         progress->setLabelText(QString("Computing DTI metrics for slice %1 of %2.").
                                arg(z+1).arg(s));
@@ -439,15 +446,15 @@ void DiffusionModel::computeDTIStuff(const QList<fcube> &ADC, QList<fcube> &metr
                     // Gradient Encoding Schemes
                     // Concepts in Magnetic Resonance Part A DOI 10.1002/cmr.a
                     // correct for negative eigen values
-                    avgD = sum(abs(eigVal))/3.0;
-                    tmp = sqrt(pow((eigVal(0)-avgD),2)+
-                               pow((eigVal(1)-avgD),2)+
-                               pow((eigVal(2)-avgD),2));
+                    MD = sum(abs(eigVal))/3.0;
+                    tmp = sqrt(pow((eigVal(0)-MD),2)+
+                               pow((eigVal(1)-MD),2)+
+                               pow((eigVal(2)-MD),2));
                     // in order: MD, FA, RA, VR
-                    metrics[3](x,y,z) = avgD;
+                    metrics[3](x,y,z) = MD;
                     metrics[4](x,y,z) = qMax(qMin(tmp/sqrt(1/1.5*dot(eigVal,eigVal)),1.0),0.0);
-                    metrics[5](x,y,z) = qMax(qMin(tmp/(sqrt(6.0)*avgD),sqrt(2.0)),0.0);
-                    metrics[6](x,y,z) = qMax<float>(qMin<float>(prod(eigVal)/pow(avgD,3),1.0),0.0);
+                    metrics[5](x,y,z) = qMax(qMin(tmp/(sqrt(6.0)*MD),sqrt(2.0)),0.0);
+                    metrics[6](x,y,z) = qMax<float>(qMin<float>(prod(eigVal)/pow(MD,3),1.0),0.0);
                 }
                 Tensor.clear();
             }
@@ -665,7 +672,7 @@ bool DiffusionModel::FACT_DTI(TrackingParameters tp,FiberTracts &fibers,MyProgre
     double length;
     QVector3D   propDir;
     // use all brain as ROI
-    Polyline ROI_Points;
+    QVector<QVector3D> ROI_Points;
     ROI_Points.reserve(accu(Mask));
     for (uint i=0;i<nRows;i++)
         for (uint j=0;j<nCols;j++)
@@ -786,8 +793,7 @@ void DiffusionModel::createFACT_DTI_Tract(QVector3D seed, QVector3D propDir,
 }
 
 /**************************************************************************************************/
-inline Polyline DiffusionModel::smoothFiber(Polyline &fiber,
-                                                      int smoothingQual)
+inline Polyline DiffusionModel::smoothFiber(Polyline &fiber, int smoothingQual)
 {
     // sample the fiber to decrease number of points
     // Given that the sampling quality can vary from 5 to 20,
