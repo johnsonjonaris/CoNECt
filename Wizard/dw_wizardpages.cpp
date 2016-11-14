@@ -38,10 +38,8 @@ void Page1DW::initializePage()
 {
     individual = field("intro.singleSubject").toBool();
     SourceBaseNameEdit->setDisabled(individual);
-    if (individual)
-        registerField("page1dw.sourceBaseName",SourceBaseNameEdit);
-    else
-        registerField("page1dw.sourceBaseName*",SourceBaseNameEdit);
+    registerField(individual?"page1dw.sourceBaseName":"page1dw.sourceBaseName*",
+                  SourceBaseNameEdit);
 }
 
 void Page1DW::onDataSourceEditChange(QString str)
