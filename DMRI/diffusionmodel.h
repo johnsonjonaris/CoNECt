@@ -125,7 +125,7 @@ private:
     void createProbabilistic_TOD_Tract(QVector3D seed,
                                        QVector3D propDir,
                                        const TrackingParameters &tp,
-                                       QVector<QVector3D> &fiber);
+                                       Polyline &fiber);
     /// return propagation vector based on TOD propabilistic method
     QVector3D getProbablistic_TOD_PropagationVector(vec tod,
                                                     int nTen,
@@ -136,8 +136,8 @@ private:
     void createFACT_DTI_Tract(QVector3D seed,
                               QVector3D propDir,
                               const TrackingParameters &tp,
-                              QVector<QVector3D> &fiber);
+                              Polyline &fiber);
     /// smooth fiber tract using a b-spline
-    QVector<QVector3D> smoothFiber(QVector<QVector3D> &fiber, int smoothingQual);
+    Polyline smoothFiber(Polyline &fiber, int smoothingQual);
 };
 #endif // DIFFUSIONMODEL_H

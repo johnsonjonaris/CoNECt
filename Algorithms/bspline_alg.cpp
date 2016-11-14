@@ -1,6 +1,6 @@
 #include "bspline_alg.h"
 
-QVector<QVector3D> BSPLINE::bSplineDeBoor(const QVector<QVector3D> &ctrlPoints, uint qual)
+Polyline BSpline::bSplineDeBoor(const Polyline &ctrlPoints, uint qual)
 {
     if (ctrlPoints.size() < 3)
         return ctrlPoints;
@@ -33,7 +33,7 @@ QVector<QVector3D> BSPLINE::bSplineDeBoor(const QVector<QVector3D> &ctrlPoints, 
         I(i) = c;
     }
     // prepare output points
-    QVector<QVector3D> OpPoints;
+    Polyline OpPoints;
     OpPoints.reserve(nOpPoints);
 
     // begin deBoor algorithm
@@ -43,13 +43,8 @@ QVector<QVector3D> BSPLINE::bSplineDeBoor(const QVector<QVector3D> &ctrlPoints, 
 }
 
 // this De Boor's Algorithm, implemented in a recursive manner
-QVector3D BSPLINE::deBoor(int k,
-                          int degree,
-                          int i,
-                          double u,
-                          const ucolvec &knots,
-                          const QVector<QVector3D> &ctrlPoints
-                          )
+QVector3D BSpline::deBoor(int k, int degree, int i, double u,
+                          const ucolvec &knots, const Polyline &ctrlPoints)
 {
     if( k == 0)
         return ctrlPoints[i];

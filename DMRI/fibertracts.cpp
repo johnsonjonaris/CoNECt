@@ -112,7 +112,7 @@ bool FiberTracts::readFiber(const QString &fileName,const DiffusionModelDimensio
         // fill the fXYZChain list
         if (fi.suffix() == "fib") {         // our format
             // test for correct reading
-            fXYZChain.append(QVector<QVector3D>());
+            fXYZChain.append(Polyline());
             fXYZChain.last().resize(fh.nLength);
             sz = sizeof(QVector3D)*fh.nLength;
             if (file.read((char *) fXYZChain.last().data(), sz) != sz) {
@@ -132,7 +132,7 @@ bool FiberTracts::readFiber(const QString &fileName,const DiffusionModelDimensio
                 file.close();
                 return false;
             }
-            fXYZChain.append(QVector<QVector3D>());
+            fXYZChain.append(Polyline());
             fXYZChain.last().reserve(fh.nLength);
             for (int k=0;k<fh.nLength;k++) {
                 // if slicing sequencing is in negative,

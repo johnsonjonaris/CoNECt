@@ -13,7 +13,7 @@ class FiberTracts
     // data, note that we can not use std::vector since
     // there are no direct memory pointer to the data
     // it is only present in C++11
-    QList < QVector<QVector3D> >    fXYZChain;
+    QList < Polyline >              fXYZChain;
     QList <QColor>                  fColors;
     fvec                            fLength;
     FiberFileHeader                 ffh;
@@ -24,7 +24,7 @@ public:
 
 
     // access
-    inline void append(const QVector<QVector3D> &f, const QColor &c,float l)
+    inline void append(const Polyline &f, const QColor &c,float l)
     {
         fXYZChain.append(f);
         fColors.append(c);
@@ -45,7 +45,7 @@ public:
     // 1) access functions should be constant since they will not modify the data
     // 2) access functions should be inline for speed, so they must be implemented in the header
     // It is up to the user to be sure that the indeces used are in range
-    inline QVector<QVector3D> getFiber(int index) const { return fXYZChain.at(index); }
+    inline Polyline getFiber(int index) const { return fXYZChain.at(index); }
     inline int size() const {return ffh.nFiberNr;}
     inline bool isEmpty() const {return ffh.nFiberNr == 0;}
 

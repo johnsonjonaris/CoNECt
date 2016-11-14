@@ -483,7 +483,7 @@ bool DiffusionModel::probablistic_TOD_Tracking(TrackingParameters tp,
     MTRand drand(seedr);
 
     // use all brain as ROI
-    QVector<QVector3D> ROI_Points;
+    Polyline ROI_Points;
     ROI_Points.reserve(accu(Mask));
     for (uint i=0;i<nRows;i++)
         for (uint j=0;j<nCols;++j)
@@ -510,7 +510,7 @@ bool DiffusionModel::probablistic_TOD_Tracking(TrackingParameters tp,
 
         if ( Mask(ROI_Points[i].x(),ROI_Points[i].y(),ROI_Points[i].z()) == 0)
             continue;
-        QVector<QVector3D> fiber;
+        Polyline fiber;
         for (int j=0;j<tp.tractsPerSeed;++j) {
             // everytime start from a random location
             seed = ROI_Points[i] - QVector3D(0.5,0.5,0.5) + QVector3D(drand(),drand(),drand());
@@ -553,9 +553,9 @@ bool DiffusionModel::probablistic_TOD_Tracking(TrackingParameters tp,
     // update fibers length array
     return true;
 }
-void DiffusionModel::createProbabilistic_TOD_Tract(QVector3D seed,QVector3D propDir,
+void DiffusionModel::createProbabilistic_TOD_Tract(QVector3D seed, QVector3D propDir,
                                                    const TrackingParameters &tp,
-                                                   QVector<QVector3D> &fiber)
+                                                   Polyline &fiber)
 {
     bool ContinueFlag = true;
     double step = qSqrt(2.0)*tp.propStep/(QVector3D(dx,dy,dz).length());
@@ -665,7 +665,7 @@ bool DiffusionModel::FACT_DTI(TrackingParameters tp,FiberTracts &fibers,MyProgre
     double length;
     QVector3D   propDir;
     // use all brain as ROI
-    QVector<QVector3D> ROI_Points;
+    Polyline ROI_Points;
     ROI_Points.reserve(accu(Mask));
     for (uint i=0;i<nRows;i++)
         for (uint j=0;j<nCols;j++)
@@ -686,7 +686,7 @@ bool DiffusionModel::FACT_DTI(TrackingParameters tp,FiberTracts &fibers,MyProgre
     fibers.clear();
     fibers.setDataDimension(nRows,nCols,nSlices);
     fibers.setVoxelDimension(dx,dy,dz);
-    QVector<QVector3D> fiber;
+    Polyline fiber;
     int j =0, k =0,l = 0;
     for (int i=0;i<ROI_Points.size();++i) {
         if (progress->wasCanceled()) {
@@ -728,7 +728,7 @@ bool DiffusionModel::FACT_DTI(TrackingParameters tp,FiberTracts &fibers,MyProgre
 
 void DiffusionModel::createFACT_DTI_Tract(QVector3D seed, QVector3D propDir,
                                           const TrackingParameters &tp,
-                                          QVector<QVector3D> &fiber)
+                                          Polyline &fiber)
 {
     bool ContinueFlag = true;
     double dotProd = 0, step = qSqrt(2.0)*tp.propStep/(QVector3D(dx,dy,dz).length());
@@ -786,7 +786,7 @@ void DiffusionModel::createFACT_DTI_Tract(QVector3D seed, QVector3D propDir,
 }
 
 /**************************************************************************************************/
-inline QVector<QVector3D> DiffusionModel::smoothFiber(QVector<QVector3D> &fiber,
+inline Polyline DiffusionModel::smoothFiber(Polyline &fiber,
                                                       int smoothingQual)
 {
     // sample the fiber to decrease number of points
@@ -801,10 +801,10 @@ inline QVector<QVector3D> DiffusionModel::smoothFiber(QVector<QVector3D> &fiber,
     else if (fiber.size() > 300)
         skip = qCeil(fiber.size()*smoothingQual/300.0);
 
-    QVector<QVector3D> tmp;
+    Polyline tmp;
     tmp.reserve(qCeil(fiber.size()/skip)+1);
     for (int s = 0; s < fiber.size() - 1; s+=skip)
         tmp.append(fiber.at(s));
     tmp.append(fiber.last());
-    return BSPLINE::bSplineDeBoor(tmp,smoothingQual);
+    return BSpline::bSplineDeBoor(tmp,smoothingQual);
 }

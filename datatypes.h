@@ -3,6 +3,8 @@
 
 #include <QtCore>
 
+typedef QVector<QVector3D> Polyline;
+
 /// selected region of interest (ROI) shape
 enum ROIShape
 {
