@@ -91,6 +91,16 @@ public:
                         MyProgressDialog *progress);
 
     /// compute DTI model
+    /**
+     * @brief computeDTIModel compute the diffusion tensor model
+     * @param dwi diffusion weighted images
+     * @param gTable gradient table
+     * @param bValue b-value
+     * @param nLevel noise level
+     * @param ADC output: apparent diffusion coefficient
+     * @param progress progress bar
+     * @return true if succeeded
+     */
     static bool computeDTIModel(QList<s16_cube> &dwi,
                                 mat gTable,
                                 float bValue,
