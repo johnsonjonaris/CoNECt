@@ -944,8 +944,8 @@ void MainWindow::openModel()
 
     }
     else {
-        QList<fcube> ADC,metrics;
-        if (!dm.readDTI(fileName,ADC,metrics,prog) || dm.isEmpty()) {
+        QList<fcube> ADC, metrics;
+        if (!dm.readDTI(fileName, ADC, metrics, prog) || dm.isEmpty()) {
             delete prog;
             return;
         }
@@ -1037,10 +1037,10 @@ void MainWindow::onWizardButtonPress()
         src = src.replace("/",sep);
         if (src.at(src.size()-1) == sep) src.truncate(src.size()-1);
         QString baseName = QFileInfo(wizard->field("page1dw.sourceBaseName").toString()).baseName();
-        ImageFileType inType = static_cast<ImageFileType>(wizard->field("page1dw.dataType").toUInt());
-        ImageFileType outType = static_cast<ImageFileType>(wizard->field("page1dw.saveMetricFormat").toUInt()+1);
-        bool isDICOM = (inType == DICOM);
-        inType = (isDICOM)?outType:inType;
+        ImageFileType inputType = static_cast<ImageFileType>(wizard->field("page1dw.dataType").toUInt());
+        ImageFileType outputType = static_cast<ImageFileType>(wizard->field("page1dw.saveMetricFormat").toUInt()+1);
+        bool isDICOM = (inputType == DICOM);
+        inputType = (isDICOM)?outputType:inputType;
         DiffusionModelType model = static_cast<DiffusionModelType>(wizard->field("page1dw.imagingModel").toUInt());
         QString sinc = wizard->field("page1dw.saveFolder").toString();
         if (sinc.at(sinc.size()-1) == sep) sinc.truncate(sinc.size()-1);
@@ -1093,7 +1093,7 @@ void MainWindow::onWizardButtonPress()
                 if (!QDir(saveFolder).exists()) { opDir.mkdir(subjects[s]); }
                 log += (isIndividual)?("Converting from DICOM ... \n"):
                                       ("Converting from DICOM for subject " + subjects[s] + "\n");
-                if (!DICOM2NII(inFolder,saveFolder,(outType == NIFTI),baseName)) {
+                if (!DICOM2NII(inFolder,saveFolder,(outputType == NIFTI),baseName)) {
                     log += "Conversion from DICOM failed \n";
 //                    if (isIndividual) { delete prog; return;}
                     continue;
@@ -1106,7 +1106,7 @@ void MainWindow::onWizardButtonPress()
         }
         // inpect data
         DataInspectionDialog *w = new DataInspectionDialog(this);
-        w->init(isIndividual,src,baseName,inType,expNImgs);
+        w->init(isIndividual,src,baseName,inputType,expNImgs);
         if (!w->exec()) { delete w; return; }
         ucolvec subjectsStatus = w->subjectsStatus;
         w->hide();
@@ -1141,8 +1141,8 @@ void MainWindow::onWizardButtonPress()
             if (model == DTI) {
                     log += (isIndividual)?("\nDTI model extraction ... \n"):
                                           ("\nDTI model extraction for subject " + subjects[s] +" :\n");
-                if (!processDTI_DWI_Subject(dwiFile,inType,gTable,bValue,nLevel,
-                                            computeMetrics,tp,outType,saveFolder, log,
+                if (!processDTI_DWI_Subject(dwiFile,inputType,gTable,bValue,nLevel,
+                                            computeMetrics,tp,outputType,saveFolder, log,
                                             globProg)) {
                     log  += "Non complete subject.\n";
                     ++failed;
