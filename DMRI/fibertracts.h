@@ -8,6 +8,37 @@
 
 using namespace arma;   // don't forget it VIP
 
+// define DTIStudio fiber header
+// define fiber header, RGB and XYZ structures
+struct RGB_TRIPLE { quint8 r, g, b; };
+struct TagXYZ_TRIPLE { float x, y, z; };
+
+struct FiberHeader
+{
+    qint32          nLength;            ///< fiber length;
+    qint8           nSelStatus;
+    RGB_TRIPLE      rgbColor;           ///< fiber solid color
+    qint32          nSelLenStart;       ///< the start-point of the selected fiber
+    qint32          nSelLenEnd;         ///< the end-point of the selected fiber
+};
+
+struct FiberFileHeader
+{
+    char        sFiberFileTag[8];       ///< file tag = FiberDat
+    qint32      nFiberNr;               ///< total number of fibers
+    qint32      nFiberLenMax;           ///< max-length of fibers
+    float       fFiberLenMean;          ///< mean-length of fibers
+    quint32     nImgWidth;              ///< image width
+    quint32     nImgHeight;             ///< image height
+    quint32     nImgSlices;             ///< number of slices
+    float       fPixelSizeWidth;        ///< width voxel size
+    float       fPixelSizeHeight;       ///< height voxel size
+    float       fSliceThickness;        ///< slice thickness
+    uchar       enumSliceOrientation;   ///< slice orientation
+    uchar       enumSliceSequencing;    ///< slice sequencing
+    //        char sVersion[8];                // version number
+};
+
 class FiberTracts
 {
     // data, note that we can not use std::vector since

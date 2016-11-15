@@ -10,301 +10,152 @@
 using namespace arma;
 using namespace std;
 
+/**
+ * \struct Analyze Header Key
+ * sizeof_header Must indicate the byte size of the header file
+ * extents Should be 16384, the image file is created as contiguous with a minimum extent size
+ * regular Must be ‘r’ to indicate that all images and volumes are the same size
+*/
+struct HeaderKey               /* header key */
+{                               /* off + size */
+    int sizeof_hdr;             /* 0 + 4 */
+    char hdr_data_type[10];     /* 4 + 10 */
+    char db_name[18];           /* 14 + 18 */
+    int extents;                /* 32 + 4 */
+    short int session_error;    /* 36 + 2 */
+    char regular;               /* 38 + 1 */
+    char hkey_un0;              /* 39 + 1 */
+}; /* total=40 bytes */
+
+struct ImageDimension
+{
+    short int dim[8];   /**< Array of the image dimensions
+                         * dim[0]        Number of dimensions in database; usually 4
+                         * dim[1]        Image X dimension; number of pixels in an image row
+                         * dim[2]        Image Y dimension; number of pixel rows in slice
+                         * dim[3]        Volume Z dimension; number of slices in a volume
+                         * dim[4]        Time points, number of volumes in a database
+                         */
+    short int unused8;
+    short int unused9;
+    short int unused10;
+    short int unused11;
+    short int unused12;
+    short int unused13;
+    short int unused14;
+    short int datatype;     ///< ImageDataType type for this image set
+    short int bitpix;       ///< number of bits per pixel: 1, 8, 16, 32, or 64.
+    short int dim_un0;
+    float pixdim[8];        /**< real world measurements in mm. and ms.
+                             * pixdim[1]     voxel width in mm.
+                             * pixdim[2]     voxel height in mm.
+                             * pixdim[3]     slice thickness in mm.
+                             */
+    float vox_offset;       /**< byte offset in the .img file at which voxels start.
+                             * This value can not be negative to specify that the
+                             * absolute value is applied for every image in the file. */
+    float funused1;
+    float funused2;
+    float funused3;
+    float cal_max,cal_min;  ///< specify the range of calibration values
+    float compressed;
+    float verified;
+    int glmax,glmin;        ///< The max and min pixel values for the entire database.
+}; /*total = 108 bytes*/
+
+struct DataHistory
+{
+    //orient:
+
+    char descrip[80];               /* 0 + 80 */
+    char aux_file[24];              /* 80 + 24 */
+    char orient;                    /** slice orientation for this dataset.
+                                      * 0 transverse unflipped
+                                      * 1 coronal unflipped
+                                      * 2 sagittal unflipped
+                                      * 3 transverse flipped
+                                      * 4 coronal flipped
+                                      * 5 sagittal flipped */
+    char originator[10];            /* 105 + 10 */
+    char generated[10];             /* 115 + 10 */
+    char scannum[10];               /* 125 + 10 */
+    char patient_id[10];            /* 135 + 10 */
+    char exp_date[10];              /* 145 + 10 */
+    char exp_time[10];              /* 155 + 10 */
+    char his_un0[3];                /* 165 + 3 */
+    int views;                      /* 168 + 4 */
+    int vols_added;                 /* 172 + 4 */
+    int start_field;                /* 176 + 4 */
+    int field_skip;                 /* 180 + 4 */
+    int omax, omin;                 /* 184 + 8 */
+    int smax, smin;                 /* 192 + 8 */
+};
+
+struct AnalyzeHeader
+{
+    struct HeaderKey hk;           /* 0 + 40 */
+    struct ImageDimension dime;    /* 40 + 108 */
+    struct DataHistory hist;       /* 148 + 200 */
+};
+/* total=348 bytes*/
 
 template<typename T>
-inline Cube<T> swapCube(const Cube<T> &in, uchar direction)
-{
-    Cube<T> out = Cube<T>();
-    if (direction == SWAP_XY) {                 // swap XY
-        out = Cube<T>(in.n_cols,in.n_rows,in.n_slices);
-        for (uint i =0; i< in.n_slices;i++)
-            out.slice(i) = in.slice(i).t();
-    }
-    else if (direction == SWAP_XZ) {            // swap XZ
-        out = Cube<T>(in.n_slices,in.n_cols,in.n_rows);
-        Mat<T> tmp = Mat<T>();
-        for (uint i =0; i< in.n_cols;i++) {
-            tmp = in(span::all,span(i),span::all);
-            out(span::all,span(i),span::all) = tmp.t();
-        }
-    }
-    else if (direction == SWAP_YZ) {            // swap YZ
-        out = Cube<T>(in.n_rows,in.n_slices,in.n_cols);
-        Mat<T> tmp = Mat<T>();
-        for (uint i =0; i< in.n_rows;i++) {
-            tmp = in(span(i),span::all,span::all);
-            out(span(i),span::all,span::all) = tmp.t();
-        }
-    }
-    return out;
-}
+Cube<T> swapCube(const Cube<T> &in, uchar direction);
 
 template<typename T>
-inline Cube<T> mirrorCube(const Cube<T> &in,uchar direction)
-{
-    Cube<T> out = Cube<T>(in.n_rows,in.n_cols,in.n_slices);
-    if (direction == FLIP_X) {          // flip X
-        for (uint i =0; i< in.n_slices;i++)
-            out.slice(i) = flipud(in.slice(i));
-    }
-    else if (direction == FLIP_Y) {     // flip Y
-        for (uint i =0; i<  in.n_slices;i++)
-            out.slice(i) = fliplr(in.slice(i));
-    }
-    else if (direction == FLIP_Z) {     // flip Z
-        Mat<T> tmp = Mat<T>();
-        for (uint i =0; i< in.n_cols;i++) {
-            tmp = in(span::all,span(i),span::all);
-            out(span::all,span(i),span::all) = fliplr(tmp);
-        }
-    }
-    return out;
-}
+Cube<T> mirrorCube(const Cube<T> &in, uchar direction);
 
-bool readHeader(QString headerFileName,AnalyzeHeader& header,ImageFileType fileType);
+bool readHeader(QString headerFileName, AnalyzeHeader& header, ImageFileType fileType);
 
-inline bool checkImageFile(QString imgFileName, uint fileType, const AnalyzeHeader &header)
-{
-    {
-        if (imgFileName.isEmpty())
-            return false;
-        // check file openning
-        QFile file(imgFileName);
-        if (!file.open(QIODevice::ReadOnly)) {
-            QMessageBox::critical(0, "Error", QString("Cannot read file %1:\n%2.")
-                                  .arg(file.fileName()).arg(file.errorString()));
-            return false;
-        }
-        // check file size
-        quint32 nRows = header.dime.dim[1],
-                nCols = header.dime.dim[2],
-                nSlices = header.dime.dim[3],
-                nVolumes = header.dime.dim[4],
-                nVox = nRows*nCols*nSlices,
-                dt = header.dime.datatype,
-                fileSize;
-        if (dt == DT_BINARY)
-            fileSize = nVox/8*nVolumes;
-        else if (dt == DT_UNSIGNED_CHAR)
-            fileSize = nVox*nVolumes;
-        else if (dt == DT_SIGNED_SHORT)
-            fileSize = nVox*2*nVolumes;
-        else if ( (dt == DT_SIGNED_INT) || (dt == DT_FLOAT))
-            fileSize = nVox*4*nVolumes;
-        else if (dt == DT_DOUBLE)
-            fileSize = nVox*8*nVolumes;
-        if (fileType == NIFTI)
-            fileSize += header.dime.vox_offset; // add header size
-        if (file.size() != fileSize ) {
-            QMessageBox::critical(0, "Error", "File size does not agree with header data.");
-            file.close();
-            return false;
-        }
-        file.close();
-        return true;
-    }
-}
-
-// read image function
-template<typename T>
-static bool readImage(QString imgFileName,uint fileType, bool preview,MyProgressDialog *progress,
-                      AnalyzeHeader &header,QList< Cube<T> > &out)
-{
-    if (!checkImageFile(imgFileName, fileType,header))
-        return false;
-    // check file openning
-    QFile file(imgFileName);
-    if (!file.open(QIODevice::ReadOnly))
-        return false;
-    // check file size
-    quint32 nRows = header.dime.dim[1],
-            nCols = header.dime.dim[2],
-            nSlices = header.dime.dim[3],
-            nVolumes = header.dime.dim[4],
-            nVox = nRows*nCols*nSlices,
-            dt = header.dime.datatype;
-    if (fileType == NIFTI)
-        file.seek(qint64(header.dime.vox_offset));
-    // read file according to the datatype
-    // if preview load the first volume only
-    if (preview)
-        nVolumes = 1;
-    // prepare progress bar    
-    progress->setLabelText("Reading Image ... ");
-    progress->setRange(0,2*nVolumes+2);
-    progress->setModal(true);
-    progress->setFixedSize(progress->sizeHint());
-    progress->setValue(0);
-    progress->show();
-    // read data
-    if (dt == DT_BINARY) {
-        // this code is only meaningful in case of uchar
-        if (sizeof(T) != sizeof(uchar)) {
-            file.close();
-            return false;
-        }
-        int n = nVox*nVolumes/8;
-        uchar *data = new uchar[n];
-        if (file.read( (char *) data, sizeof(uchar)*n) != sizeof(uchar)*n) {
-            QMessageBox::critical(0, "Error", "Can not read file.");
-            file.close();
-            return false;
-        }
-        quint32 c = 0;
-        // decode bit by bit
-        uchar *tmp = new uchar[n*8];
-        for (int i = 0; i<n; i++) {
-            for (int j = 0; j<8; j++)
-                tmp[c++] = (data[i] & (1<<j)) >> j;
-        }
-        delete data;
-        // store data
-        for (uint k = 0; k<nVolumes;k++) {
-            T *data = new T[nVox];
-            for (uint i = 0;i<nVox;i++)
-                data[i] = tmp[i+k*nVox];
-            out.append(Cube<T>(data,nRows,nCols,nSlices,false,false));
-            progress->setValue(progress->value()+1);
-        }
-        delete tmp;
-    }
-    else {
-        for (uint j = 0; j<nVolumes;j++) {
-            out.append(Cube<T>(nRows,nCols,nSlices));
-            if (file.read( (char *) out.last().memptr(), sizeof(T)*nVox ) != sizeof(T)*nVox) {
-                QMessageBox::critical(0, "Error", "Can not read file.");
-                file.close();
-                return false;
-            }
-            progress->setValue(progress->value()+1);
-        }
-    }
-    file.close();
-    // correct orientation for display
-    // permute rows and columns
-    if (fileType == NIFTI || fileType == ANALYZE) {
-        for (uint i =0; i<nVolumes;i++) {
-            out[i] = swapCube(out[i],SWAP_XY);
-            progress->setValue(progress->value()+1);
-        }
-        // correct header information
-        swap(header.dime.dim[1],header.dime.dim[2]);
-        swap(header.dime.pixdim[1],header.dime.pixdim[2]);
-    }
-    return true;
-}
-
+bool checkImageFile(QString imgFileName, uint fileType, const AnalyzeHeader &header);
 
 // read image function
 template<typename T>
 void orientCubes(const QVector<uchar> &orientation, MyProgressDialog *progress,
-                 AnalyzeHeader &header,QList< Cube<T> > &data)
-{
-    if (orientation.isEmpty() || data.isEmpty())
-        return;
-    static umat s = Mat<uword>(2,3);
-    s <<1<<2<<endr<<1<<3<<endr<<2<<3<<endr;
-    progress->setLabelText("Rotating images ... ");
-    progress->setRange(0,orientation.size()+2);
-    progress->setValue(0);
-    for (int k = 0; k < orientation.size();k++) {
-        uint o = orientation.at(k);
-        if (o < 3) {    // permutation
-            for (int i =0; i<data.size();i++)
-                data[i] = swapCube(data[i],orientation.at(k));
-            // correct header information
-            swap(header.dime.dim[s(o,1)],header.dime.dim[s(o,1)]);
-            swap(header.dime.pixdim[s(o,1)],header.dime.pixdim[s(o,1)]);
-        }
-        else {          // mirroring
-            for (int i =0; i<data.size();i++)
-                data[i] = mirrorCube(data[i],orientation.at(k));
-        }
-        progress->setValue(progress->value()+1);
-    }
-}
+                 AnalyzeHeader &header, QList< Cube<T> > &data);
 
-/*************************************************************************************************/
+template void orientCubes(const QVector<uchar> &o, MyProgressDialog *p, AnalyzeHeader &h, QList< uchar_cube > &d);
+template void orientCubes(const QVector<uchar> &o, MyProgressDialog *p, AnalyzeHeader &h, QList< s16_cube > &d);
+template void orientCubes(const QVector<uchar> &o, MyProgressDialog *p, AnalyzeHeader &h, QList< s32_cube > &d);
+template void orientCubes(const QVector<uchar> &o, MyProgressDialog *p, AnalyzeHeader &h, QList< fcube > &d);
+template void orientCubes(const QVector<uchar> &o, MyProgressDialog *p, AnalyzeHeader &h, QList< cube > &d);
 
-// main function to write a file
+// read image function
 template<typename T>
-bool saveImages(QString fileName,uint fileType,
-                AnalyzeHeader header,QList< Cube<T> > &data)
-{
-    /*
-        ANALYZE75WRITE writes image file of Mayo Analyze 7.5 data set.
-        ANALYZE75WRITE writes the image data from the IMG file of
-        an Analyze 7.5 format data set (a pair of fileName.HDR and fileName.IMG
-        files).  For single-frame images, I is an M-by-N array where M is the
-        number of rows and N is the number of columns. For multi-dimensional
-        images, I can be an M-by-N-by-O or M-by-N-by-O-by-P array where M is
-        the number of rows, N is the number of columns, O is the number of
-        slices per volume and P is the number of volumes or time points. The
-        data type of I is consistent with the image data type specified in
-        the metadata obtained from the header file.
-    */
-    if (!fileName.isEmpty()) {
-        // assure correct fileNames for header and image files
-        fileName = QFileInfo(fileName).absolutePath() + "/" + QFileInfo(fileName).baseName();
-        if (fileType == ANALYZE) {
-            QString headerFileName = fileName + ".hdr";
-            // read header file
-            if (writeHeader(headerFileName, header)) {
-                // read image file
-                QString imgFileName = fileName + ".img";
-                return writeImage(imgFileName, fileType, header, data);
-            }
-        }
-        else if (fileType == NIFTI) {
-            QString imgFileName = fileName + ".nii";
-            return writeImage(imgFileName, fileType, header, data);
-        }
-    }
-    return false;
-}
+bool readImage(QString imgFileName,uint fileType, bool preview,MyProgressDialog *progress,
+                      AnalyzeHeader &header,QList< Cube<T> > &out);
+
+template bool readImage(QString im, uint ft, bool pv, MyProgressDialog *p, AnalyzeHeader &h, QList< uchar_cube > &out);
+template bool readImage(QString im, uint ft, bool pv, MyProgressDialog *p, AnalyzeHeader &h, QList< s16_cube > &out);
+template bool readImage(QString im, uint ft, bool pv, MyProgressDialog *p, AnalyzeHeader &h, QList< s32_cube > &out);
+template bool readImage(QString im, uint ft, bool pv, MyProgressDialog *p, AnalyzeHeader &h, QList< fcube > &out);
+template bool readImage(QString im, uint ft, bool pv, MyProgressDialog *p, AnalyzeHeader &h, QList< cube > &out);
 
 // write header function
 bool writeHeader(QString headerFileName, AnalyzeHeader header);
 
 // write image function
 template <typename T>
-bool writeImage(QString imgfileName,uint fileType,
-                AnalyzeHeader header,QList< Cube<T> > &data)
-{
-    // check file
-    QFile file(imgfileName);
-    if (!file.open(QIODevice::WriteOnly)) {
-        QMessageBox::warning(0, "Warning!", QString("Cannot write image file %1:\n%2.")
-                             .arg(file.fileName()).arg(file.errorString()));
-        return false;
-    }
-    // permute rows and columns
-    for (int i =0; i<data.size();i++)
-        data[i] = swapCube(data[i],SWAP_XY);
-    // write header for NIFTI files
-    if (fileType == NIFTI) {
-        // correct header information
-        swap(header.dime.dim[1],header.dime.dim[2]);
-        swap(header.dime.pixdim[1],header.dime.pixdim[2]);
-        file.write( (char *) &header, sizeof(header) );
-        file.seek(qint64(header.dime.vox_offset));
-    }
-    // write file
-    uint nVox = data.first().n_elem;
-    for (int i = 0;i<data.size();i++)
-        if (!(file.write( (char *) data[i].memptr(),
-                          sizeof(T)*nVox) == sizeof(T)*nVox)) {
-            QMessageBox::critical(0, "Error", "Can not write file.");
-            file.close();
-            return false;
-        }
-    file.close();
-    return true;
-}
+bool writeImage(QString imgfileName, uint fileType,
+                AnalyzeHeader header, QList< Cube<T> > &data);
+
+// main function to write a file
+template<typename T>
+bool saveImages(QString fileName,uint fileType,
+                AnalyzeHeader header,QList< Cube<T> > &data);
+
+// to prevent implementation in the header file, compiler needs an instance of every type:
+// http://stackoverflow.com/questions/495021/why-can-templates-only-be-implemented-in-the-header-file/495056#495056
+template bool saveImages(QString fn, uint ft, AnalyzeHeader h, QList< uchar_cube > &d);
+template bool saveImages(QString fn, uint ft, AnalyzeHeader h, QList< s16_cube > &d);
+template bool saveImages(QString fn, uint ft, AnalyzeHeader h, QList< s32_cube > &d);
+template bool saveImages(QString fn, uint ft, AnalyzeHeader h, QList< fcube > &d);
+template bool saveImages(QString fn, uint ft, AnalyzeHeader h, QList< cube > &d);
+
 
 // prepare header
-AnalyzeHeader prepareHeader(quint32 dim[4],ImageDataType dataType,
-                            float pixDim[3],ImageFileType fileType);
+AnalyzeHeader prepareHeader(quint32 dim[4], ImageDataType dataType,
+                            float pixDim[3], ImageFileType fileType);
 
 DiffusionModelDimension getParameters(const AnalyzeHeader &header);
 
