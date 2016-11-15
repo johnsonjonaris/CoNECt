@@ -12,6 +12,7 @@ using namespace arma;   // don't forget it VIP
 // define fiber header, RGB and XYZ structures
 struct RGB_TRIPLE { quint8 r, g, b; };
 struct TagXYZ_TRIPLE { float x, y, z; };
+enum {NEGATIVE_Seq = 1};
 
 struct FiberHeader
 {
@@ -37,6 +38,13 @@ struct FiberFileHeader
     uchar       enumSliceOrientation;   ///< slice orientation
     uchar       enumSliceSequencing;    ///< slice sequencing
     //        char sVersion[8];                // version number
+};
+
+/// fiber tract file type
+enum FiberFileType
+{
+    CONECT = 0,             ///< CoNECt file type
+    DTISTUDIO = 1           ///< DTI Studio
 };
 
 class FiberTracts

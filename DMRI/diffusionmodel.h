@@ -22,6 +22,22 @@
 
 using namespace arma;
 
+/// diffusion model type
+enum DiffusionModelType
+{
+    DTI=0,                  ///< diffusion tensor imaging
+    TDF=1,                  ///< tensor distribution function
+    ODF,                    ///< orientation distribution function
+    SH_QBALL,               ///< spherical harmonics
+    EMPTY                   ///< empty model
+};
+
+enum Algorithm          ///< tracking algorithm to use
+{
+    FACT = 0,           ///< FACT tracking algorithm by Mori S and co.
+    TOD_TRACT = 2       ///< TDF-based probabilistic tracking
+};
+
 class DiffusionModel
 {
     float longestFiber;                     ///< longest possible fiber value (mm)

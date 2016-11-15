@@ -41,6 +41,7 @@
 #include <vtkPolyDataReader.h>
 
 #include "DMRI\fibertracts.h"
+#include "DMRI/mriimage.h"
 
 using namespace arma;
 

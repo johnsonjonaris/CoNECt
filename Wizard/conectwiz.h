@@ -10,15 +10,10 @@
 #include "UI\gtabledialog.h"
 #include "datatypes.h"
 #include "DMRI\mriimage.h"
+#include "DMRI/diffusionmodel.h"
 #include "armadillo"
 
 using namespace arma;
-
-enum Algorithm          ///< tracking algorithm to use
-{
-    FACT = 0,           ///< FACT tracking algorithm by Mori S and co.
-    TOD_TRACT = 2       ///< TDF-based probabilistic tracking
-};
 
 enum
 {

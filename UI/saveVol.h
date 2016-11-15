@@ -5,7 +5,8 @@
 #include <QtGui>
 #include "ui_saveVol.h"
 #include "armadillo"
-#include "datatypes.h"
+#include "DMRI/mriimage.h"
+
 using namespace arma;
 
 /**
